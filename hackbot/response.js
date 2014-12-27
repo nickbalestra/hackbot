@@ -6,7 +6,6 @@ define(function () {
             this.message = message;
             this.match = match;
             this.envelope = {
-                //TODO room: this.message.room,
                 user: this.message.user,
                 message: this.message
             };

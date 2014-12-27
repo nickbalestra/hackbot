@@ -106,11 +106,11 @@ define(function (require) {
                     break;
                 }
             }
-            //console.log(results);
-
         };
 
         // Public: Loads every script in the given path.
+        // List of plugin to be loaded have to be defined inside script.js.
+        // script.js need to be placed inside the given path directory
         //
         // path - A String path on the filesystem.
         // Defaul to hackbot/scripts
@@ -148,15 +148,29 @@ define(function (require) {
             return this.adapter.print(args.join(' '));
         };
 
+        // Public: A helper reply function which delegates to the adapter's reply
+        // function.
+        //
+        // user    - A User Name.
+        // strings - One or more Strings for each message to send.
+        //
+        // Returns nothing.
         Robot.prototype.reply = function(user, strings) {
-            var envelope = {user: user};
-            return
+            var envelope = {'user': user};
+            var strings = Array.prototype.slice.call(arguments, 1);
+            return this.adapter.reply(envelope, strings.join(' '));
         };
 
+        // Public: Kick off the event loop for the adapter
+        //
+        // Returns nothing.
         Robot.prototype.run = function() {
             return this.adapter.run();
         };
 
+        // Public: Gracefully shutdown the robot process
+        //
+        // Returns nothing.
         Robot.prototype.shutdown = function() {
             return this.adapter.close();
         };

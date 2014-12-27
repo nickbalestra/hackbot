@@ -64,7 +64,7 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         // Returns nothing.
         Adapter.prototype.send = function() {
             var envelope = arguments[0];
-            var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
+            var strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
             $.ajax({
                 type: "POST",
                 url: Chat.resourceAddress,
@@ -84,9 +84,21 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         // Returns nothing.
         Adapter.prototype.reply = function() {
             var envelope = arguments[0];
-            var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
+            var strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
             console.log(envelope);
             return this.robot.adapter.send(envelope, "@" + envelope.user + ": " + strings.join(' '));
+        };
+
+        // Public: Raw method for sending emote data back to the chat source.
+        //
+        // strings  - One or more Strings for each message to send.
+        //
+        // Returns nothing.
+        Adapter.prototype.emote = function() {
+            var envelope = {};
+            var strings = Array.prototype.slice.call(arguments);
+            console.log(envelope);
+            return this.robot.adapter.send(envelope, "*" + strings.join(' ') + "*");
         };
 
         // Public: Raw method for printing on scren a message.

@@ -58,7 +58,8 @@ define(['underscorish', 'chatbuilder'], function (_) {
 
         // Public: Raw method for sending data back to the chat source.
         //
-        // message - A string of the message to be sent back to the chat.
+        // envelope - A Object with message and user details.
+        // strings - String of the message to be sent back to the chat.
         //
         // Returns nothing.
         Adapter.prototype.send = function() {
@@ -77,7 +78,8 @@ define(['underscorish', 'chatbuilder'], function (_) {
 
         // Public: Raw method for building a reply and sending it back to the chat source.
         //
-        // message - A string of the message to be sent back to the chat.
+        // envelope - A Object with message and user details.
+        // strings - String of the message to be sent back to the chat.
         //
         // Returns nothing.
         Adapter.prototype.reply = function() {
@@ -89,12 +91,15 @@ define(['underscorish', 'chatbuilder'], function (_) {
 
         // Public: Raw method for printing on scren a message.
         //
-        // message - A string of the message to be printed.
+        // envelope - A Object with message and user details.
+        // strings - A string of the message to be printed.
         //
         // Returns nothing.
         Adapter.prototype.print = function() {
-            var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
-            $('ul.screen').append('<li>' + args.join(' ') + '</li>');
+            var envelope = arguments[0];
+            var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
+            //var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
+            $('ul.screen').append('<li>' + strings.join(' ') + '</li>');
         };
 
 

@@ -75,14 +75,26 @@ define(function (require) {
             }
         };
 
+        // Public: A helper send function which delegates to the adapter's send
+        // function.
+        //
+        // strings - One or more Strings for each message to send.
+        //
+        // Returns nothing.
         Robot.prototype.send = function() {
             var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
             return this.adapter.send(args.join(' '));
         };
 
+        // Public: A helper print function which delegates to the adapter's print
+        // function.
+        //
+        // strings - One or more Strings to be printed.
+        //
+        // Returns nothing.
         Robot.prototype.print = function() {
             var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
-            $('ul.screen').append('<li>' + args.join(' ') + '</li>');
+            return this.adapter.print(args.join(' '));
         };
 
         Robot.prototype.reply = function(user, strings) {

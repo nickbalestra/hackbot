@@ -109,7 +109,6 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         Adapter.prototype.print = function() {
             var envelope = arguments[0];
             var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
-            //var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
             $('ul.screen').append('<li>' + strings.join(' ') + '</li>');
         };
 

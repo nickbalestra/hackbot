@@ -19,5 +19,7 @@ requirejs(['hackbot/robot'], function(){
     // Once the needed code is loaded, instanciate a robot
     // You can pass it a name, default is hackbot
     // if we want to keep using the username prompt of chatbuilder to name our bot, just pass Chat.username to the constructor
-    
+    robot = new Robot();
+    robot.load();
+    robot.run();
 });

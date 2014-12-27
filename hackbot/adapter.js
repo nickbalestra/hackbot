@@ -1,4 +1,4 @@
-define(['underscorish', 'chatbuilder'], function (_) {
+define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], function (_) {
 
     var tick,
         tmpCache = [],

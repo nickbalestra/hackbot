@@ -4,6 +4,7 @@ define(function (require) {
         Response = require('./response'),
         Listener = require('./listener'),
         Adapter = require('./adapter'),
+        Brain = require('./brain'),
         Message = require('./message');
 
     Robot = (function(name) {
@@ -23,6 +24,7 @@ define(function (require) {
             this.listeners = [];
             this.Response = Response;
             this.adapter = new Adapter(this);
+            this.brain = new Brain(this);
         }
 
         // Public: Adds a Listener that attempts to match incoming messages based on
@@ -172,7 +174,8 @@ define(function (require) {
         //
         // Returns nothing.
         Robot.prototype.shutdown = function() {
-            return this.adapter.close();
+            this.adapter.close();
+            return this.brain.close();
         };
 
         return Robot;

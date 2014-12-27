@@ -16,6 +16,6 @@ define(function () {
             return date.getDate() + "/" + ( date.getMonth() + 1 )+ "/" + date.getFullYear() + " at " + strTime;
         }
 
-        return msg.print(user + ' said: ' + text + ' ( ' + formatDate(now) + ' )' );
+        return msg.robot.adapter.print(user + ' said: ' + text + ' ( ' + formatDate(now) + ' )' );
     });
 });

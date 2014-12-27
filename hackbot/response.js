@@ -5,24 +5,35 @@ define(function () {
             this.robot = robot;
             this.message = message;
             this.match = match;
+            this.envelope = {
+                //TODO room: this.message.room,
+                user: this.message.user,
+                message: this.message
+            };
         }
 
-        Response.prototype.finish = function() {
-            return this.message.finish();
-        };
 
         Response.prototype.send = function() {
-            var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
-            return this.robot.send(args.join(' '));
+            var strings = 1 <= arguments.length ? Array.prototype.slice.call(arguments, 0) : [];
+            return this.robot.adapter.send(this.envelope, Array.prototype.slice.call(strings) );
         };
 
-        Response.prototype.print = function() {
-            var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
-            return this.robot.print(args.join(' '));
+        Response.prototype.emote = function() {
+            var strings = 1 <= arguments.length ? Array.prototype.slice.call(arguments, 0) : [];
+            return this.robot.adapter.emote(this.envelope, Array.prototype.slice.call(strings) );
+        };
+
+        Response.prototype.reply = Response.prototype.mention = function() {
+            var strings = 1 <= arguments.length ? Array.prototype.slice.call(arguments, 0) : [];
+            return this.robot.adapter.reply(this.envelope, Array.prototype.slice.call(strings) );
         };
 
         Response.prototype.random = function(items) {
             return items[Math.floor(Math.random() * items.length)];
+        };
+
+        Response.prototype.finish = function() {
+            return this.message.finish();
         };
 
         return Response;

@@ -61,12 +61,14 @@ define(['underscorish', 'chatbuilder'], function (_) {
         // message - A string of the message to be sent back to the chat.
         //
         // Returns nothing.
-        Adapter.prototype.send = function(message) {
+        Adapter.prototype.send = function() {
+            var envelope = arguments[0];
+            var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
             $.ajax({
                 type: "POST",
                 url: Chat.resourceAddress,
                 data: JSON.stringify({
-                    text: this.robot.name + ": " + message,
+                    text: this.robot.name + ": " + strings.join(' '),
                     username: this.robot.name
                 }),
                 dataType: "json"
@@ -78,9 +80,24 @@ define(['underscorish', 'chatbuilder'], function (_) {
         // message - A string of the message to be sent back to the chat.
         //
         // Returns nothing.
-        Adapter.prototype.reply = function(message) {
-            // TODO
+        Adapter.prototype.reply = function() {
+            var envelope = arguments[0];
+            var strings = strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
+            console.log(envelope);
+            return this.robot.adapter.send(envelope, "@" + envelope.user + ": " + strings.join(' '));
         };
+
+        // Public: Raw method for printing on scren a message.
+        //
+        // message - A string of the message to be printed.
+        //
+        // Returns nothing.
+        Adapter.prototype.print = function() {
+            var args = Array.prototype.slice.call(arguments); // http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments
+            $('ul.screen').append('<li>' + args.join(' ') + '</li>');
+        };
+
+
         return Adapter
     })();
 

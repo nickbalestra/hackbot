@@ -8,7 +8,7 @@ requirejs.config({
     baseUrl: 'lib',
     paths: {
         hackbot: '../hackbot',
-        scripts: '../hackbot/scripts',
+        //scripts: '../hackbot/scripts',
         chatbuilder: 'http://chatbuilder.hackreactor.com/ChatBuilder',
         underscorish: 'underscorish'
     }

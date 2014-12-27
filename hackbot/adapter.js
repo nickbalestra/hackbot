@@ -95,9 +95,8 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         //
         // Returns nothing.
         Adapter.prototype.emote = function() {
-            var envelope = {};
-            var strings = Array.prototype.slice.call(arguments);
-            console.log(envelope);
+            var envelope = arguments[0];
+            var strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
             return this.robot.adapter.send(envelope, "*" + strings.join(' ') + "*");
         };
 

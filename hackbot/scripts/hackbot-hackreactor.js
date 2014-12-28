@@ -1,11 +1,22 @@
 define(['underscorish'], function (_) {
 
+    // A little plugin that consume kimonolabs APIS
+    //
+    // robot    - Your kimonolabs.com api key.
     var apikey = 'YOUR_KIMONOLABS.COM_APIKEY',
     replies = {
         program: ["Next HR cohorts starts on $... onward!", "Upcoming HR programs will start on $", "Next HR classes begins on $"],
         students: ["Ask me again, and I will give you all the % records I found on the HR website", "Ready to read all %? Here we go: $", "$ ....and with the latest one should be %"]
     };
 
+    // A helper function which create the apiCall
+    //
+    // endpoint - Endpoint of the API to call.
+    // filter   - Filter to be applied on the endpoint.
+    // sucess   - A success callback function to be runned against the response
+    // msg      - A Message object
+    //
+    // Returns a boolean of whether the matcher matched.
     function apiCall(endpoint, filter, success, msg) {
         $.ajax({
             url: 'https://www.kimonolabs.com/api/42cpjfsk',
@@ -19,6 +30,14 @@ define(['underscorish'], function (_) {
         });
     }
 
+    // A helper function which build the reply, to be used as callback inside the apiCall helper
+    //
+    // Response - Results reeturned from the API.
+    // endpoint - Endpoint of the API to call.
+    // filter   - Filter to be applied on the endpoint.
+    // msg      - A Message object
+    //
+    // Returns a boolean of whether the matcher matched.
     function buildReply(response, endpoint, filter, msg) {
         if ( response.count > 0 ) {
             var reply = msg.random(replies[endpoint]),
@@ -29,7 +48,7 @@ define(['underscorish'], function (_) {
             return msg.reply(reply.replace("%", total).replace("$", elements.join( ' * ' )) );
         }
     }
-
+    
     function notEmpty(string){
         return string.length > 0;
     }

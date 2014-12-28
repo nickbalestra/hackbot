@@ -1,5 +1,6 @@
 define({
     // 'hello' : 'hackbot-hello',
     // 'thankyou' : 'hackbot-thankyou'
-    'log' : 'hackbot-log'
+    'log' : 'hackbot-log',
+    'hackreactor.com' : 'hackbot-hackreactor'
 });

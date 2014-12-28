@@ -39,7 +39,8 @@ define(['underscorish'], function (_) {
             return this;
         };
 
-        // Public: Dump the whole content of data contained in the brain and
+        // Public: Manage shutdown of the brain
+        // Dump the whole content of data contained in the brain
         //
         // Returns nothing
         Brain.prototype.close = function() {

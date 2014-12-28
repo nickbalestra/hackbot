@@ -85,7 +85,6 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         Adapter.prototype.reply = function() {
             var envelope = arguments[0];
             var strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
-            console.log(envelope);
             return this.robot.adapter.send(envelope, "@" + envelope.user + ": " + strings.join(' '));
         };
 

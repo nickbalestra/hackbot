@@ -1,6 +1,6 @@
 define(['underscorish'], function (_) {
 
-    var apikey = 'RCHyU822jWGpQBfA4mj6Mwk0ekY6YIos',
+    var apikey = 'YOUR_KIMONOLABS.COM_APIKEY',
     replies = {
         program: ["Next HR cohorts starts on $... onward!", "Upcoming HR programs will start on $", "Next HR classes begins on $"],
         students: ["Ask me again, and I will give you all the % records I found on the HR website", "Ready to read all %? Here we go: $", "$ ....and with the latest one should be %"]

@@ -23,6 +23,7 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
                 data: { order: "-createdAt" },
                 success: function(response) {
                     _.each( clean( _.map(response.results, format), normalize), function(msg){
+                        this.robot.brain.userForName(msg.user, msg);
                         return this.robot.adapter.receive( new Message(msg.user, msg.text, msg.id) );
                     });
                 }

@@ -1,5 +1,7 @@
-define(['underscorish'], function (_) {
+define(['underscorish', './user'], function (_, User) {
 
+
+//var User = require('./user');
     var Brain = (function() {
 
 
@@ -56,6 +58,18 @@ define(['underscorish'], function (_) {
                 this.robot.adapter.print(key + ': ' + value);
             })
             return memory;
+        };
+
+        Brain.prototype.userForName = function(name) {
+            var user = this.data.users[name];
+            if (!user) {
+                user = new User(name);
+                this.data.users[name] = user;
+
+            }
+            //console.log(user);
+            // TODO if user existed
+            return user;
         };
 
 

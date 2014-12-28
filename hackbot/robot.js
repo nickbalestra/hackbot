@@ -101,6 +101,7 @@ define(function (require) {
             var error, listener, results, _i, _len, _ref;
             results = [];
             _ref = this.listeners;
+            // TODO refactor with underscorish
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 listener = _ref[_i];
                 results.push(listener.call(message));
@@ -121,6 +122,7 @@ define(function (require) {
         Robot.prototype.load = function(path) {
             var scriptsPath = path ? path + '/' : '../hackbot/scripts/';
             require([scriptsPath + 'scripts'], function(toLoad){
+                // TODO refactor with underscorish
                 for (var script in toLoad) {
                     require([scriptsPath + toLoad[script]]);
                 }

@@ -14,8 +14,8 @@ define(['underscorish'], function (_) {
         // Public: Store key-value pair under the private namespace
         //
         // Returns the instance for chaining.
-        Brain.prototype.set = function(key, value) {
-            this.data._private[key] = value;
+        Brain.prototype.set = function(key, value, sector) {
+            this.data[sector ? sector : '_private'][key] = value;
             return this;
         };
 
@@ -23,19 +23,20 @@ define(['underscorish'], function (_) {
         // or return null if not found.
         //
         // Returns the value.
-        Brain.prototype.get = function(key) {
+        Brain.prototype.get = function(key, sector) {
             var value;
-            return ( value = this.data._private[key] ) != null ? value : null;
+            return ( value = this.data[sector ? sector : '_private'][key] ) != null ? value : null;
         };
 
         // Public: Remove value by key from the private namespace in data
         // if it exists
         //
         // Returns the instance for chaining.
-        Brain.prototype.delete = function(key) {
-            var value;
-            if (value = this.data._private[key] != null ? this.data._private[key] : null)
-                delete this.data._private[key];
+        Brain.prototype.delete = function(key, sector) {
+            var value,
+                sector = [sector ? sector : '_private'];
+            if (value = this.data[sector][key] != null ? this.data[sector][key] : null)
+                delete this.data[sector][key];
             return this;
         };
 

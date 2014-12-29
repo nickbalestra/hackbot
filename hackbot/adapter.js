@@ -23,8 +23,8 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
                 data: { order: "-createdAt" },
                 success: function(response) {
                     _.each( clean( _.map(response.results, format), normalize), function(msg){
-                        this.robot.brain.userForName(msg.user, msg);
-                        return this.robot.adapter.receive( new Message(msg.user, msg.text, msg.id) );
+                        var user = this.robot.brain.userForName(msg.user);
+                        return this.robot.adapter.receive( new Message(user, msg.text, msg.id, msg.createdAt) );
                     });
                 }
             });
@@ -137,10 +137,10 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             return message.user != "RoboChat" && message.user != this.robot.name;
         }
         function onlyNew(message) {
-            return Date.parse(message.date) > Date.parse(lastReceivedAt);
+            return Date.parse(message.createdAt) > Date.parse(lastReceivedAt);
         }
         function byDate(msgA, msgB) {
-            return Date.parse(msgA.date) - Date.parse(msgB.date);
+            return Date.parse(msgA.createdAt) - Date.parse(msgB.createdAt);
         }
 
     }
@@ -154,14 +154,14 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
 
         var text = message.text,
             author = message.username || text.substring(text.indexOf(':'), 0),
-            text = text.substring(text.indexOf(':') + 2);
-            date = message.createdAt;
+            text = text.substring(text.indexOf(':') + 2),
+            createdAt = message.createdAt;
 
         return {
             'id': message.objectId,
             'user': author,
             'text': text,
-            'date': date
+            'createdAt': createdAt
         };
     }
 

@@ -4,10 +4,11 @@ define(function () {
     //
     // user - A User that sent the message.
     Message = (function() {
-        function Message(user, text, id, done) {
+        function Message(user, text, id, createdAt, done) {
             this.user = user;
             this.text = text;
             this.id = id;
+            this.createdAt = createdAt;
             this.done = done != null ? done : false;
         }
 

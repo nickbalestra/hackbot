@@ -1,16 +1,11 @@
 define(['underscorish'], function (_) {
 
 
-    //listen to everything and update brain information
+    //listen to everything and update brain data on users
     return robot.hear(/(.)/i, function(msg) {
-        var text = msg.message.text;
-        var user = msg.robot.brain.userForName(msg.message.user);
 
+        var user = msg.robot.brain.userForName(msg.message.user.name);
         user.msgHistory.push(msg.message);
-
-
-
-
 
     });
 });

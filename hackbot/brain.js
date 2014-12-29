@@ -55,6 +55,7 @@ define(['underscorish', './user'], function (_, User) {
             var memory;
             (memory = sector === 'users' ? this.data.users : this.data._private);
             _.each(memory, function(value, key){
+                // TODO need to flatten objects or nestedd arrays, in a kind of tostring
                 this.robot.adapter.print(key + ': ' + value);
             })
             return memory;
@@ -65,10 +66,7 @@ define(['underscorish', './user'], function (_, User) {
             if (!user) {
                 user = new User(name);
                 this.data.users[name] = user;
-
             }
-            //console.log(user);
-            // TODO if user existed
             return user;
         };
 

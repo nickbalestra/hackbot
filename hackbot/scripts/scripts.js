@@ -1,7 +1,7 @@
 define({
-    // 'hello' : 'hackbot-hello',
-    // 'thankyou' : 'hackbot-thankyou'
+    //'hello' : 'hackbot-hello',
+    //'thankyou' : 'hackbot-thankyou',
     'log' : 'hackbot-log',
-    'users' : 'hackbot-users'
-    // 'hackreactor.com' : 'hackbot-hackreactor'
+    'users' : 'hackbot-users',
+    'hackreactor.com' : 'hackbot-hackreactor'
 });

@@ -5,11 +5,11 @@ define(function () {
 
     robot.hear(/(hi|hey|hello|good( [d'])?ay(e)?)/i, function(msg) {
         var hello = msg.random(hellos);
-        return msg.send(hello.replace("%", msg.message.user));
+        return msg.send(hello.replace("%", msg.message.user.name));
     });
 
     return robot.hear(/(^(good )?m(a|o)rnin(g)?)/i, function(msg) {
         var hello = msg.random(mornings);
-        return msg.send(hello.replace("%", msg.message.user));
+        return msg.send(hello.replace("%", msg.message.user.name));
     });
 });

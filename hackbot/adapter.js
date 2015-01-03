@@ -86,7 +86,7 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         Adapter.prototype.reply = function() {
             var envelope = arguments[0];
             var strings = 2 <= arguments.length ? Array.prototype.slice.call(arguments, 1) : [];
-            return this.robot.adapter.send(envelope, "@" + envelope.user + ": " + strings.join(' '));
+            return this.robot.adapter.send(envelope, "@" + envelope.user.name + ": " + strings.join(' '));
         };
 
         // Public: Raw method for sending emote data back to the chat source.

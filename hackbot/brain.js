@@ -11,13 +11,16 @@ define(['underscorish', './user'], function (_, User) {
                 users: {},
                 _private: {}
             };
+            if (this.hasBackup())
+                this.data = this.hasBackup();
         }
 
         // Public: Store key-value pair under the private namespace
         //
         // Returns the instance for chaining.
-        Brain.prototype.set = function(key, value, sector) {
-            this.data[sector ? sector : '_private'][key] = value;
+        Brain.prototype.set = function(key, value) {
+            this.data._private[key] = value;
+            this.backup();
             return this;
         };
 
@@ -25,41 +28,32 @@ define(['underscorish', './user'], function (_, User) {
         // or return null if not found.
         //
         // Returns the value.
-        Brain.prototype.get = function(key, sector) {
+        Brain.prototype.get = function(key) {
             var value;
-            return ( value = this.data[sector ? sector : '_private'][key] ) != null ? value : null;
+            return ( value = this.data._private[key] ) != null ? value : null;
         };
 
         // Public: Remove value by key from the private namespace in data
         // if it exists
         //
         // Returns the instance for chaining.
-        Brain.prototype.delete = function(key, sector) {
-            var value,
-                sector = [sector ? sector : '_private'];
-            if (value = this.data[sector][key] != null ? this.data[sector][key] : null)
-                delete this.data[sector][key];
+        Brain.prototype.delete = function(key) {
+            var value;
+            if (value = this.data._private[key])
+                delete this.data._private[key];
+            this.backup();
             return this;
         };
 
         // Public: Manage shutdown of the brain
-        // Dump the whole content of data contained in the brain
+        // Save on localstorage the whole brain content
         //
         // Returns nothing
         Brain.prototype.close = function() {
-            this.dump('users');
-            this.dump('_private');
+            this.backup();
+            return JSON.parse(localStorage.getItem('data'));
         };
 
-        Brain.prototype.dump = function(sector) {
-            var memory;
-            (memory = sector === 'users' ? this.data.users : this.data._private);
-            _.each(memory, function(value, key){
-                // TODO need to flatten objects or nestedd arrays, in a kind of tostring
-                this.robot.adapter.print(key + ': ' + value);
-            })
-            return memory;
-        };
 
         Brain.prototype.userForName = function(name) {
             var user = this.data.users[name];
@@ -67,8 +61,29 @@ define(['underscorish', './user'], function (_, User) {
                 user = new User(name);
                 this.data.users[name] = user;
             }
+            this.backup();
             return user;
         };
+
+        Brain.prototype.backup = function(){
+            localStorage.setItem('data', JSON.stringify(this.data));
+        };
+
+        Brain.prototype.hasBackup = function(){
+            var backup = JSON.parse(localStorage.getItem('data'));
+            if (backup != null)
+                if (backup.hasOwnProperty('_private') != null || backup.hasOwnProperty('users') != null)
+                    return backup;
+            else
+                return false;
+        };
+
+        Brain.prototype.clearBackup = function(){
+            localStorage.clear();
+        };
+
+
+
 
 
         return Brain

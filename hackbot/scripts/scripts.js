@@ -4,5 +4,6 @@ define({
     'log' : 'hackbot-log',
     'users' : 'hackbot-users',
     'help' : 'hackbot-help',
-    'hackreactor.com' : 'hackbot-hackreactor'
+    'hackreactor' : 'hackbot-hackreactor',
+    'about' : 'hackbot-about'
 });

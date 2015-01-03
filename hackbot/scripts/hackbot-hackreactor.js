@@ -2,9 +2,10 @@ define(['underscorish'], function (_) {
 
     // A little plugin that consume kimonolabs APIS
     //
-    // robot    - Your kimonolabs.com api key.
-    robot.command("hackbot hr program", "show the next course as published on hackreactor.com/program ");
+    // apikey    - Your kimonolabs.com api key.
+    robot.command("hackbot hr program", "show next courses as published on hackreactor.com/program ");
     robot.command("hackbot hr students [name, twitter, github, linkedin, site]", "take and list relative students data from hackreactor.com/students ");
+
     var apikey = 'RCHyU822jWGpQBfA4mj6Mwk0ekY6YIos',
     replies = {
         program: ["Next HR cohorts starts on $... onward!", "Upcoming HR programs will start on $", "Next HR classes begins on $"],

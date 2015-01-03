@@ -5,5 +5,6 @@ define({
     'users' : 'hackbot-users',
     'help' : 'hackbot-help',
     'hackreactor' : 'hackbot-hackreactor',
+    'hackreactorRocks' : 'hackbot-hackreactorrocks',
     'about' : 'hackbot-about'
 });

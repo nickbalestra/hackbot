@@ -1,5 +1,7 @@
 define(function () {
 
+    //robot.command("hello", "reply with some greetings");
+
     var hellos = ["Well hello there, %", "Hey %, hello!", "Good day, %", "Good 'aye!, %"],
         mornings = ["Good morning, %", "Good morning to you too, %", "Marnin', %", "Good 'aye!, %"];
 

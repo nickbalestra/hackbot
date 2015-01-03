@@ -3,7 +3,9 @@ define(['underscorish'], function (_) {
     // A little plugin that consume kimonolabs APIS
     //
     // robot    - Your kimonolabs.com api key.
-    var apikey = '',
+    robot.command("hackbot hr program", "show the next course as published on hackreactor.com/program ");
+    robot.command("hackbot hr students [name, twitter, github, linkedin, site]", "take and list relative students data from hackreactor.com/students ");
+    var apikey = 'RCHyU822jWGpQBfA4mj6Mwk0ekY6YIos',
     replies = {
         program: ["Next HR cohorts starts on $... onward!", "Upcoming HR programs will start on $", "Next HR classes begins on $"],
         students: ["Ask me again, and I will give you all the % records I found on the HR website", "Ready to read all %? Here we go: $", "$ ....and with the latest one should be %"]
@@ -50,27 +52,27 @@ define(['underscorish'], function (_) {
         return string.length > 0;
     }
 
-    robot.respond(/.*(program|schedule|cohort|class)/i, function(msg) {
+    robot.respond(/(hr program)/i, function(msg) {
         apiCall('program', 'date', buildReply, msg);
     });
 
-    robot.respond(/.*(student(s)?('[s])? name(s)?|alumni(s)?('[s])? name(s)?)/i, function(msg) {
+    robot.respond(/(hr students names)/i, function(msg) {
         apiCall('students', 'name', buildReply, msg);
     });
 
-    robot.respond(/.*(student(s)?('[s])? github(s)?|alumni(s)?('[s])? github(s)?)/i, function(msg) {
+    robot.respond(/(hr students github)/i, function(msg) {
         apiCall('students', 'github', buildReply, msg);
     });
 
-    robot.respond(/.*(student(s)?('[s])? link(e)?din(s)?|alumni(s)?('[s])? link(e)?din(s)?)/i, function(msg) {
+    robot.respond(/(hr students linkedin)/i, function(msg) {
         apiCall('students', 'linkedin', buildReply, msg);
     });
 
-    robot.respond(/.*(student(s)?('[s])? personal(s)?('[s])?(\s)?site(s)?|alumni(s)?('[s])? personal(s)?('[s])?(\s)?site(s)?)/i, function(msg) {
+    robot.respond(/(hr students sites)/i, function(msg) {
         apiCall('students', 'personalsite', buildReply, msg);
     });
 
-    return robot.respond(/.*(student(s)?('[s])? twitter(s)?|alumni(s)?('[s])? twitter(s)?)/i, function(msg) {
+    return robot.respond(/(hr students twitter)/i, function(msg) {
         apiCall('students', 'twitter', buildReply, msg);
     });
 

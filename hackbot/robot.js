@@ -22,10 +22,21 @@ define(function (require) {
             }
             this.name = name;
             this.listeners = [];
+            this.commands = [];
             this.Response = Response;
             this.adapter = new Adapter(this);
             this.brain = new Brain(this);
         }
+
+        // Public: Adds a command and description to be used for help and reference
+        //
+        // command    -
+        // description -
+        //
+        // Returns nothing.
+        Robot.prototype.command = function(command, description){
+            return this.commands.push({command: command, description: description});
+        };
 
         // Public: Adds a Listener that attempts to match incoming messages based on
         // a Regex.
@@ -63,34 +74,6 @@ define(function (require) {
             return this.listeners.push(new Listener(this, newRegex, callback));
         };
 
-        // Public: Adds a Listener that triggers when anyone enters the room.
-        //
-        // callback - A Function that is called with a Response object.
-        //
-        // Returns nothing.
-        Robot.prototype.enter = function(callback) {
-            // TODO
-        }
-
-        // Public: Adds a Listener that triggers when anyone leaves the room.
-        //
-        // callback - A Function that is called with a Response object.
-        //
-        // Returns nothing.
-        Robot.prototype.leave = function(callback) {
-            // TODO
-        }
-
-        // Public: Adds a Listener that triggers when no other text matchers match.
-        //
-        // callback - A Function that is called with a Response object.
-        //
-        // Returns nothing.
-        Robot.prototype.catchAll = function(callback){
-            // TODO SHIT HERE
-
-        };
-
         // Public: Passes the given message to any interested Listeners.
         //
         // message - A Message instance. Listeners can flag this message as 'done' to
@@ -101,7 +84,6 @@ define(function (require) {
             var error, listener, results, _i, _len, _ref;
             results = [];
             _ref = this.listeners;
-            // TODO refactor with underscorish
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 listener = _ref[_i];
                 results.push(listener.call(message));
@@ -122,7 +104,6 @@ define(function (require) {
         Robot.prototype.load = function(path) {
             var scriptsPath = path ? path + '/' : '../hackbot/scripts/';
             require([scriptsPath + 'scripts'], function(toLoad){
-                // TODO refactor with underscorish
                 for (var script in toLoad) {
                     require([scriptsPath + toLoad[script]]);
                 }

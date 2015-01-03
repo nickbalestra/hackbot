@@ -3,5 +3,6 @@ define({
     //'thankyou' : 'hackbot-thankyou',
     'log' : 'hackbot-log',
     'users' : 'hackbot-users',
-    'hackreactor.com' : 'hackbot-hackreactor'
+    'help' : 'hackbot-help'
+    //'hackreactor.com' : 'hackbot-hackreactor'
 });

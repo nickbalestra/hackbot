@@ -17,7 +17,7 @@ define(['underscorish', './user'], function (_, User) {
 
         // Public: Store key-value pair under the private namespace
         //
-        // Returns the instance for chaining.
+        // Returns the instance.
         Brain.prototype.set = function(key, value) {
             this.data._private[key] = value;
             this.backup();
@@ -36,7 +36,7 @@ define(['underscorish', './user'], function (_, User) {
         // Public: Remove value by key from the private namespace in data
         // if it exists
         //
-        // Returns the instance for chaining.
+        // Returns the instance.
         Brain.prototype.delete = function(key) {
             var value;
             if (value = this.data._private[key])

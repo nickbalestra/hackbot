@@ -1,10 +1,206 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script data-main="hackbot" src="lib/require.js"></script>
-    </head>
-    <body>
-        <h2>Hackbot</h2>
-        <ul class="screen"></ul>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Chatbuilder</title>
+    <script src="http://chatbuilder.hackreactor.com/ChatBuilder.js"></script>
+</head>
+<body>
+
+    <script>
+    /*
+    *  Nice, you found the HTML source code for ChatBuilder! This document kicks everything off when you load it
+    *  in your browser, and is a starting point for the whole app. It's pretty incomplete though--you should
+    *  make your own version of it that works better!
+    *
+    *  You can't edit the code here until it's in a file on your hard drive, so copy this whole page of source
+    *  code and paste it into a plain text editor like Sublime Text 2 (http://www.sublimetext.com/). Save it as
+    *  a `.html` file, and open that file with Google Chrome. You can now edit it however you like, and refresh
+    *  the page to see your modifications take effect on how the application runs.
+    *
+    *  Fair warning: one or more of the steps ahead could require a good amount of research to understand all
+    *  the terms and technologies mentioned. Googling words you haven't heard before is a great idea. Just be
+    *  careful not to spend too long in 'research mode' without making any forward progress on your real goal of
+    *  completing the app!
+    *
+    *  When you've got this code saved as a local file, uncomment the line of JavaScript code below and open
+    *  the new file in Google Chrome. Your next instructions will be waiting for you in the JavaScript console.
+    *  If you already know the Chrome JS development tools pretty well, feel free to skip this opening tutorial
+    *  by calling the `.start()` function on `Chat.guide` instead of `.intro()`
+    *
+    *  NOTE: Please do not publish or share any of the code associated with this challenge. We've worked really
+    *  hard to build this material and publishing solutions diminishes its effectiveness.
+    */
+
+    // Your JavaScript code will go right here!
+    delete Chat.display;
+    delete Chat.fetch;
+    delete Chat.send;
+
+
+
+
+
+    /*------------------------------------*\
+    #Chat.display()
+    \*------------------------------------*/
+    /**
+     * Takes a string as its only input,
+     * and displays that string to the user in a bulleted list.
+     * Chat.display()  won't work unless there is a  ul  element
+     * visible on the page with the class  messages .
+     */
+    Chat.display = function(string) {
+        $('ul.messages').append('<li>' + string + '</li>');
+    };
+
+
+
+    /*------------------------------------*\
+    #Chat.displayAll()
+    \*------------------------------------*/
+    /**
+     * Display a list of messages.
+     */
+    Chat.displayAll = function(list) {
+        Chat.clearDisplay();
+        return list.forEach(Chat.display);
+    }
+
+
+
+    /*------------------------------------*\
+    #Chat.clearDisplay()
+    \*------------------------------------*/
+    /**
+     * Clear messages displayed.
+     */
+    Chat.clearDisplay = function() {
+        $('.messages').find('li').remove();
+    }
+
+
+
+    /*------------------------------------*\
+    #Chat.fetch()
+    \*------------------------------------*/
+    /**
+     * Once done fetching messages from the server, it will call a callback function,
+     * passing an array of strings as the only argument to the callback.
+     * Each string in that array is the text value of one chat message.
+     */
+    Chat.fetch = function(callbackFunction) {
+        $.ajax({
+            url: Chat.resourceAddress,
+            data: { order: "-createdAt" },
+            success: function(response) {
+
+                function byCreationDate(a, b){
+                    return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+                }
+
+                function onlyText(object) {
+                    return object.text;
+                }
+
+                // Sometime sever
+                function normalize(list) {
+                    return (list.length > 10) ? list.reverse().slice(0,10).reverse(): list ;
+                }
+
+                function convertToString(data) {
+                    return data.results.sort(byCreationDate).map(onlyText);
+                }
+
+                return callbackFunction(normalize(convertToString(response)));
+            }
+        });
+    };
+
+
+
+    /*------------------------------------*\
+    #Chat.send()
+    \*------------------------------------*/
+    /**
+     * When you pass it a message string, will build a message object out of it
+     * and send that object to the server.
+     */
+    Chat.send = function(message) {
+        $.ajax({
+            type: "POST",
+            url: Chat.resourceAddress,
+            data: JSON.stringify({ text: Chat.username + ": " + message }),
+            dataType: "json",
+            success: function() {
+                Chat.fetch(Chat.displayAll);
+                $('input').val('');
+                $('button').attr('disabled', true);
+            }
+        })
+    };
+
+
+
+    /*------------------------------------*\
+    #Chat.start()
+    \*------------------------------------*/
+    /**
+     * Initialize the Chat
+     */
+    Chat.start = function(){
+
+        function refresh(){
+            Chat.fetch(Chat.displayAll);
+            setTimeout(refresh,3000);
+        }
+        refresh();
+
+    }();
+
+
+
+
+
+    jQuery(document).ready(function() {
+
+        var input = $('input'),
+            button = $('button');
+
+        // Don't allow to send empty messages
+        input.on('keyup', function() {
+            if ($(this).val() != '') {
+                button.attr('disabled', false);
+            } else {
+                button.attr('disabled', true);
+            }
+        });
+
+        button.on('click', function(){
+            Chat.send(input.val());
+        });
+
+        // Allow to send also by hitting enter on keyboard
+        input.keyup(function(event){
+            if(event.keyCode == 13){
+                button.click();
+            }
+        });
+
+    });
+
+    </script>
+
+    <h2>Borken Chat</h2>
+
+    <input class="draft" type="text"/> <button class="send" disabled>Send</button>
+
+    <ul class="messages">
+        <!-- once you save this code to a local `.html` file, you can delete these 3 fake, hard-coded li elements -->
+        <li>Mysterious_guide: Hey there! Let's build a chat application.</li>
+        <li>Mysterious_guide: Right now, there's actually no functionality in this chat client--it's just an inert page full of pre-written HTML that's being rendered by your browser.
+        <li>Mysterious_guide: But you can fix that--try looking at the page source to see how this page works.</li>
+    </ul>
+
+</body>
 </html>

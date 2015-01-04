@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>adapter.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>adapter.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Defining the bot and its dependencies</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+define([<span class="hljs-string">'underscorish'</span>, <span class="hljs-string">'http://chatbuilder.hackreactor.com/ChatBuilder.js'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(_)</span> </span>{
+
+    <span class="hljs-keyword">var</span> tick,
+        tmpCache = [],
+        lastReceivedAt = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+
+    <span class="hljs-keyword">var</span> Adapter = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="adapter">Adapter</h2>
+<p><code>new Adapter(robot)</code></p>
+<p><em>An adapter is a specific interface to a chat source for robots.</em></p>
+<p><strong>robot</strong> - A Robot instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Adapter</span><span class="hljs-params">(robot)</span> </span>{
+            <span class="hljs-keyword">this</span>.robot = robot;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="fetch">fetch</h3>
+<p><code>adapter.fetch()</code></p>
+<p><strong>Public:</strong> <em>A Raw method for fetching data from the chatbuilder API.
+On success format, clean, normalized the response and invoke the receive() method of the adapter if needed.</em></p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.fetch = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            $.ajax({
+                url: Chat.resourceAddress,
+                data: { order: <span class="hljs-string">"-createdAt"</span> },
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+                    _.each( clean( _.map(response.results, format), normalize), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span></span>{
+                        <span class="hljs-keyword">var</span> user = <span class="hljs-keyword">this</span>.robot.brain.userForName(msg.user);
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.receive( <span class="hljs-keyword">new</span> Message(user, msg.text, msg.id, msg.createdAt) );
+                    });
+                }
+            });
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="run">run</h3>
+<p><code>adapter.run()</code></p>
+<p><strong>Public:</strong> <em>Raw method for invoking the adapter to run.
+it start long polling with a timer on the fetch method of the adapter.</em></p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.run = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">timer</span><span class="hljs-params">()</span></span>{
+                <span class="hljs-keyword">this</span>.robot.adapter.fetch();
+                tick = setTimeout(timer, <span class="hljs-number">3000</span>);
+            })();
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"running..."</span>);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="close">close</h3>
+<p><code>adapter.close()</code></p>
+<p><strong>Public:</strong> <em>Raw method for invoking the adapter to stop fetching.</em></p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.close = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            clearTimeout(tick);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="receive">receive</h3>
+<p><code>adapter.receive(message)</code></p>
+<p><strong>Public:</strong> <em>Dispatch a received message to the robot.</em></p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.receive = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
+            <span class="hljs-keyword">this</span>.robot.receive(message);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h3 id="send">send</h3>
+<p><code>adapter.send(envelope, strings...)</code></p>
+<p><strong>Public:</strong> <em>Raw method for sending data back to the chat source.</em></p>
+<p><strong>envelope</strong> - A Object with message and user details.</p>
+<p><strong>strings</strong> - One or more Strings for each message to send.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> envelope = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">2</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>) : <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+            $.ajax({
+                type: <span class="hljs-string">"POST"</span>,
+                url: Chat.resourceAddress,
+                data: <span class="hljs-built_in">JSON</span>.stringify({
+                    text: <span class="hljs-keyword">this</span>.robot.name + <span class="hljs-string">": "</span> + strings.join(<span class="hljs-string">' '</span>),
+                    username: <span class="hljs-keyword">this</span>.robot.name
+                }),
+                dataType: <span class="hljs-string">"json"</span>
+            })
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="reply">reply</h3>
+<p><code>adapter.reply(envelope, strings...)</code></p>
+<p><strong>Public:</strong> <em>Raw method for building a reply and sending it back to the chat source.</em></p>
+<p><strong>envelope</strong> - A Object with message and user details.</p>
+<p><strong>strings</strong> - One or more Strings for each message to send.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.reply = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> envelope = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">2</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>) : [];
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.send(envelope, <span class="hljs-string">"@"</span> + envelope.user.name + <span class="hljs-string">": "</span> + strings.join(<span class="hljs-string">' '</span>));
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="emote">emote</h3>
+<p><code>adapter.emote(envelope, strings...)</code></p>
+<p><strong>Public:</strong> <em>Raw method for sending emote data back to the chat source.</em></p>
+<p><strong>envelope</strong> - A Object with message and user details.</p>
+<p><strong>strings</strong> - One or more Strings for each message to send.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.emote = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> envelope = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">2</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>) : [];
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.send(envelope, <span class="hljs-string">"*"</span> + strings.join(<span class="hljs-string">' '</span>) + <span class="hljs-string">"*"</span>);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="print">print</h3>
+<p><code>adapter.print(envelope, strings...)</code></p>
+<p><strong>Public:</strong> <em>Raw method for printing on scren a message.</em></p>
+<p>envelope - A Object with message and user details.</p>
+<p><strong>strings</strong> - One or more Strings for each message to send.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Adapter.prototype.print = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> envelope = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">2</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>) : <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+            $(<span class="hljs-string">'ul.screen'</span>).append(<span class="hljs-string">'&lt;li&gt;'</span> + strings.join(<span class="hljs-string">' '</span>) + <span class="hljs-string">'&lt;/li&gt;'</span>);
+        };
+
+
+        <span class="hljs-keyword">return</span> Adapter
+    })();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h3 id="clean">clean</h3>
+<p><code>clean(messages, callback)</code></p>
+<p><strong>Private:</strong> <em>Helper function to clean messages from noise</em></p>
+<p><strong>messages</strong> - An array of messages formatted according to the format() helper</p>
+<p><strong>callback</strong>  - An optional callback function to be called once cleaned, cleaned messages will be passed to it.</p>
+<p>Returns false in case that the results of the cleaning is 0 msg, otherwise return the cleaned messages array or, the callback if defined.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clean</span><span class="hljs-params">(messages, callback)</span> </span>{
+
+        <span class="hljs-keyword">var</span> cleanedMessages = messages.filter(onlyHumans).filter(onlyNew).sort(byDate);
+
+        <span class="hljs-keyword">if</span> ( cleanedMessages.length &gt; <span class="hljs-number">0</span> ) {
+            lastReceivedAt = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+            <span class="hljs-keyword">return</span> (callback != <span class="hljs-literal">null</span>) ? callback(cleanedMessages) : cleanedMessages;
+        } <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onlyHumans</span><span class="hljs-params">(message)</span> </span>{
+            <span class="hljs-keyword">return</span> message.user != <span class="hljs-string">"RoboChat"</span> &amp;&amp; message.user != <span class="hljs-keyword">this</span>.robot.name;
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onlyNew</span><span class="hljs-params">(message)</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Date</span>.parse(message.createdAt) &gt; <span class="hljs-built_in">Date</span>.parse(lastReceivedAt);
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">byDate</span><span class="hljs-params">(msgA, msgB)</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Date</span>.parse(msgA.createdAt) - <span class="hljs-built_in">Date</span>.parse(msgB.createdAt);
+        }
+
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h3 id="format">format</h3>
+<p><code>format(messages)</code></p>
+<p><strong>Private:</strong> <em>Helper function to format a message.</em></p>
+<p><strong>message</strong> - A message object as the chatbuilder API returns</p>
+<p>Returns a formatted object representing the message.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">format</span><span class="hljs-params">(message)</span> </span>{
+
+        <span class="hljs-keyword">var</span> text = message.text,
+            author = message.username || text.substring(text.indexOf(<span class="hljs-string">':'</span>), <span class="hljs-number">0</span>),
+            text = text.substring(text.indexOf(<span class="hljs-string">':'</span>) + <span class="hljs-number">2</span>),
+            createdAt = message.createdAt;
+
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">'id'</span>: message.objectId,
+            <span class="hljs-string">'user'</span>: author,
+            <span class="hljs-string">'text'</span>: text,
+            <span class="hljs-string">'createdAt'</span>: createdAt
+        };
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="normalize">normalize</h3>
+<p><code>normalize(messages)</code></p>
+<p><strong>Private:</strong> <em>Helper function to normalize a messages queue.</em></p>
+<p><strong>messages</strong> - An array of formatted message objects that can be sent to the adapter receiver</p>
+<p>Returns a normalized array cleaned from duplicates by temporary caching messages passed to it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalize</span><span class="hljs-params">(messages)</span> </span>{
+
+        <span class="hljs-keyword">var</span> normalized = [];
+
+        _.each(messages, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span></span>{
+            <span class="hljs-keyword">if</span> (tmpCache.length == <span class="hljs-number">0</span>) {
+                cache(msg);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (notInCache(msg)) {
+                    cache(msg);
+                    <span class="hljs-keyword">return</span> (tmpCache.length &gt; <span class="hljs-number">30</span>) ? tmpCache.shift() : <span class="hljs-literal">false</span> ;
+                }
+            }
+        });
+
+        <span class="hljs-keyword">return</span> normalized;
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cache</span><span class="hljs-params">(msg)</span> </span>{
+            tmpCache.push(msg);
+            normalized.push(msg);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notInCache</span><span class="hljs-params">(msg)</span> </span>{
+            <span class="hljs-keyword">return</span> _.every(tmpCache, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(cachedMsg)</span></span>{
+                <span class="hljs-keyword">return</span> (cachedMsg.id != msg.id);
+            });
+        }
+    }
+
+    <span class="hljs-keyword">return</span> Adapter;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,3 +1,5 @@
+// Defining the bot and its dependencies
+
 define(function (require) {
 
     var _ = require('underscorish'),
@@ -9,13 +11,13 @@ define(function (require) {
 
     Robot = (function(name) {
 
-        // Robots receive messages from a chat source (chatBuilder), and
-        // dispatch them to matching listeners.
+        // ## Robot
+        // `new Robot(name)`
         //
-        // adapter     - A String of the adapter name.
-        // name        - A String of the robot name, defaults to Hubot.
+        // _Robot receive messages from a chat source, and
+        // dispatch them to matching listeners._
         //
-        // Returns nothing.
+        // **name** - A String of the robot name, defaults to Hackbot.
         function Robot(name) {
             if (name == null) {
                 name = 'Hackbot';
@@ -28,33 +30,32 @@ define(function (require) {
             this.brain = new Brain(this);
         }
 
-        // Public: Adds a command and description to be used for help and reference
-        //
-        // command    -
-        // description -
-        //
-        // Returns nothing.
-        Robot.prototype.command = function(command, description){
-            return this.commands.push({command: command, description: description});
-        };
 
-        // Public: Adds a Listener that attempts to match incoming messages based on
-        // a Regex.
+        // ### hear
+        // `robot.hear(regex, callback)`
         //
-        // regex    - A Regex that determines if the callback should be called.
-        // callback - A Function that is called with a Response object.
+        // **Public:** _Adds a Listener that attempts to match incoming messages based on
+        // a Regex._
+        //
+        // **regex**    - A Regex that determines if the callback should be triggered.
+        //
+        // **callback** - A Function that is called with a Response object.
         //
         // Returns nothing.
         Robot.prototype.hear = function(regex, callback){
             return this.listeners.push(new Listener(this, regex, callback));
         };
 
-        // Public: Adds a Listener that attempts to match incoming messages directed
-        // at the robot based on a Regex. All regexes treat patterns like they begin
-        // with a '^'
+        // ### respond
+        // `robot.respond(regex, callback)`
         //
-        // regex    - A Regex that determines if the callback should be called.
-        // callback - A Function that is called with a Response object.
+        // **Public:** _Adds a Listener that attempts to match incoming messages directed
+        // at the robot based on a Regex. All regexes treat patterns like they begin
+        // with a '^'_
+        //
+        // **regex**    - A Regex that determines if the callback should be called.
+        //
+        // **callback** - A Function that is called with a Response object.
         //
         // Returns nothing.
         Robot.prototype.respond = function(regex, callback) {
@@ -74,9 +75,12 @@ define(function (require) {
             return this.listeners.push(new Listener(this, newRegex, callback));
         };
 
-        // Public: Passes the given message to any interested Listeners.
+        // ### receive
+        // `robot.receive(message)`
         //
-        // message - A Message instance. Listeners can flag this message as 'done' to
+        // **Public:** _Passes the given message to any interested Listeners._
+        //
+        // **message** - A Message instance. Listeners can flag this message as 'done' to
         //           prevent further execution.
         //
         // Returns nothing.
@@ -93,12 +97,14 @@ define(function (require) {
             }
         };
 
-        // Public: Loads every script in the given path.
-        // List of plugin to be loaded have to be defined inside script.js.
-        // script.js need to be placed inside the given path directory
+        // ### load
+        // `robot.load(path)`
         //
-        // path - A String path on the filesystem.
-        // Defaul to hackbot/scripts
+        // **Public:** _Loads every script defined in `script.js`.
+        // (`script.js` need to be placed inside the given path directory)_
+        //
+        // **path** - A String of path where the scripts and `scripts.js` are located.
+        // Defaul to hackbot/scripts.
         //
         // Returns nothing.
         Robot.prototype.load = function(path) {
@@ -112,10 +118,27 @@ define(function (require) {
 
         };
 
-        // Public: A helper send function which delegates to the adapter's send
-        // function.
+        // ### command
+        // `robot.command(command, description)`
         //
-        // strings - One or more Strings for each message to send.
+        // **Public:** _Adds commands reference for help reference._
+        //
+        // **command**    - A string containing the command to be run.
+        //
+        // **description** - A string explaining the command.
+        //
+        // Returns nothing.
+        Robot.prototype.command = function(command, description){
+            return this.commands.push({command: command, description: description});
+        };
+
+        // ### send
+        // `robot.send(strings...)`
+        //
+        // **Public:** _An helper send function which delegates to the adapter's send
+        // function._
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Robot.prototype.send = function() {
@@ -123,10 +146,13 @@ define(function (require) {
             return this.adapter.send(args.join(' '));
         };
 
-        // Public: A helper print function which delegates to the adapter's print
-        // function.
+        // ### print
+        // `robot.print(strings...)`
         //
-        // strings - One or more Strings to be printed.
+        // **Public:** _An helper print function which delegates to the adapter's print
+        // function._
+        //
+        // **strings** - One or more Strings to be printed.
         //
         // Returns nothing.
         Robot.prototype.print = function() {
@@ -134,11 +160,15 @@ define(function (require) {
             return this.adapter.print(args.join(' '));
         };
 
-        // Public: A helper reply function which delegates to the adapter's reply
-        // function.
+        // ### reply
+        // `robot.reply(user, strings...)`
         //
-        // user    - A User Name.
-        // strings - One or more Strings for each message to send.
+        // **Public:** _An helper reply function which delegates to the adapter's reply
+        // function._
+        //
+        // **user**    - A User Name.
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Robot.prototype.reply = function(user, strings) {
@@ -147,7 +177,10 @@ define(function (require) {
             return this.adapter.reply(envelope, strings.join(' '));
         };
 
-        // Public: Kick off the event loop for the adapter
+        // ### run
+        // `robot.run()`
+        //
+        // **Public:** _Kick off the event loop for the adapter_
         //
         // Returns nothing.
         Robot.prototype.run = function() {
@@ -155,7 +188,10 @@ define(function (require) {
             return this.adapter.run();
         };
 
-        // Public: Gracefully shutdown the robot process
+        // ### shutdown
+        // `robot.shutdown()`
+        //
+        // **Public:** _Gracefully shutdown the robot process_
         //
         // Returns nothing.
         Robot.prototype.shutdown = function() {

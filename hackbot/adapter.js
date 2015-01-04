@@ -1,3 +1,5 @@
+// Defining the bot and its dependencies
+
 define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], function (_) {
 
     var tick,
@@ -6,15 +8,21 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
 
     var Adapter = (function() {
 
-        // An adapter is a specific interface to a chat source for robots.
+        // ## Adapter
+        // `new Adapter(robot)`
         //
-        // robot - A Robot instance.
+        // _An adapter is a specific interface to a chat source for robots._
+        //
+        // **robot** - A Robot instance.
         function Adapter(robot) {
             this.robot = robot;
         }
 
-        // Public: Raw method for fetching data from the chatbuilder API.
-        // On success format, clean, normalized and invoke the receive() method of the adapter if needed
+        // ### fetch
+        // `adapter.fetch()`
+        //
+        // **Public:** _A Raw method for fetching data from the chatbuilder API.
+        // On success format, clean, normalized the response and invoke the receive() method of the adapter if needed._
         //
         // Returns nothing.
         Adapter.prototype.fetch = function() {
@@ -30,8 +38,11 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             });
         }
 
-        // Public: Raw method for invoking the bot to run.
-        // Start calling the adapter.fetch() method with a timer
+        // ### run
+        // `adapter.run()`
+        //
+        // **Public:** _Raw method for invoking the adapter to run.
+        // it start long polling with a timer on the fetch method of the adapter._
         //
         // Returns nothing.
         Adapter.prototype.run = function() {
@@ -42,25 +53,34 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             console.log("running...");
         };
 
-        // Public: Raw method for invoking the bot to stop.
-        // Clear the timer that is calling the adapter.fetch()
+        // ### close
+        // `adapter.close()`
+        //
+        // **Public:** _Raw method for invoking the adapter to stop fetching._
         //
         // Returns nothing.
         Adapter.prototype.close = function() {
             clearTimeout(tick);
         };
 
-        // Public: Dispatch a received message to the robot.
+        // ### receive
+        // `adapter.receive(message)`
+        //
+        // **Public:** _Dispatch a received message to the robot._
         //
         // Returns nothing.
         Adapter.prototype.receive = function(message) {
             this.robot.receive(message);
         };
 
-        // Public: Raw method for sending data back to the chat source.
+        // ### send
+        // `adapter.send(envelope, strings...)`
         //
-        // envelope - A Object with message and user details.
-        // strings - String of the message to be sent back to the chat.
+        // **Public:** _Raw method for sending data back to the chat source._
+        //
+        // **envelope** - A Object with message and user details.
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Adapter.prototype.send = function() {
@@ -77,10 +97,14 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             })
         };
 
-        // Public: Raw method for building a reply and sending it back to the chat source.
+        // ### reply
+        // `adapter.reply(envelope, strings...)`
         //
-        // envelope - A Object with message and user details.
-        // strings - String of the message to be sent back to the chat.
+        // **Public:** _Raw method for building a reply and sending it back to the chat source._
+        //
+        // **envelope** - A Object with message and user details.
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Adapter.prototype.reply = function() {
@@ -89,9 +113,14 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             return this.robot.adapter.send(envelope, "@" + envelope.user.name + ": " + strings.join(' '));
         };
 
-        // Public: Raw method for sending emote data back to the chat source.
+        // ### emote
+        // `adapter.emote(envelope, strings...)`
         //
-        // strings  - One or more Strings for each message to send.
+        // **Public:** _Raw method for sending emote data back to the chat source._
+        //
+        // **envelope** - A Object with message and user details.
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Adapter.prototype.emote = function() {
@@ -100,10 +129,14 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
             return this.robot.adapter.send(envelope, "*" + strings.join(' ') + "*");
         };
 
-        // Public: Raw method for printing on scren a message.
+        // ### print
+        // `adapter.print(envelope, strings...)`
+        //
+        // **Public:** _Raw method for printing on scren a message._
         //
         // envelope - A Object with message and user details.
-        // strings - A string of the message to be printed.
+        //
+        // **strings** - One or more Strings for each message to send.
         //
         // Returns nothing.
         Adapter.prototype.print = function() {
@@ -117,12 +150,16 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
     })();
 
 
-    // Private: Helper function to clean messages from noise
+    // ### clean
+    // `clean(messages, callback)`
     //
-    // messages - An array of messages formatted according to the format() helper
-    // callback  - A callback function to be called once cleaned and on which will be passed the cleaned messages
+    // **Private:** _Helper function to clean messages from noise_
     //
-    // Returns false in case that the results of the cleaning is 0 msg, otherwise return the cleaned messages array or the callback if defined.
+    // **messages** - An array of messages formatted according to the format() helper
+    //
+    // **callback**  - An optional callback function to be called once cleaned, cleaned messages will be passed to it.
+    //
+    // Returns false in case that the results of the cleaning is 0 msg, otherwise return the cleaned messages array or, the callback if defined.
     function clean(messages, callback) {
 
         var cleanedMessages = messages.filter(onlyHumans).filter(onlyNew).sort(byDate);
@@ -145,11 +182,14 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
 
     }
 
-    // Private: Helper function to format a message
+    // ### format
+    // `format(messages)`
     //
-    // message - A message object as the chatbuilder API returns
+    // **Private:** _Helper function to format a message._
     //
-    // Returns a formatted object.
+    // **message** - A message object as the chatbuilder API returns
+    //
+    // Returns a formatted object representing the message.
     function format(message) {
 
         var text = message.text,
@@ -165,9 +205,12 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
         };
     }
 
-    // Private: Helper function to normalize a messages queue
+    // ### normalize
+    // `normalize(messages)`
     //
-    // messages - An array of formatted message objects that can be sent to the adapter receiver
+    // **Private:** _Helper function to normalize a messages queue._
+    //
+    // **messages** - An array of formatted message objects that can be sent to the adapter receiver
     //
     // Returns a normalized array cleaned from duplicates by temporary caching messages passed to it.
     function normalize(messages) {

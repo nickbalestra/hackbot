@@ -1,10 +1,330 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script data-main="hackbot" src="lib/require.js"></script>
-    </head>
-    <body>
-        <h2>Hackbot</h2>
-        <ul class="screen"></ul>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Chatbuilder</title>
+    <script src="http://chatbuilder.hackreactor.com/ChatBuilder.js"></script>
+</head>
+<body>
+
+    <script>
+    /*
+    *  Nice, you found the HTML source code for ChatBuilder! This document kicks everything off when you load it
+    *  in your browser, and is a starting point for the whole app. It's pretty incomplete though--you should
+    *  make your own version of it that works better!
+    *
+    *  You can't edit the code here until it's in a file on your hard drive, so copy this whole page of source
+    *  code and paste it into a plain text editor like Sublime Text 2 (http://www.sublimetext.com/). Save it as
+    *  a `.html` file, and open that file with Google Chrome. You can now edit it however you like, and refresh
+    *  the page to see your modifications take effect on how the application runs.
+    *
+    *  Fair warning: one or more of the steps ahead could require a good amount of research to understand all
+    *  the terms and technologies mentioned. Googling words you haven't heard before is a great idea. Just be
+    *  careful not to spend too long in 'research mode' without making any forward progress on your real goal of
+    *  completing the app!
+    *
+    *  When you've got this code saved as a local file, uncomment the line of JavaScript code below and open
+    *  the new file in Google Chrome. Your next instructions will be waiting for you in the JavaScript console.
+    *  If you already know the Chrome JS development tools pretty well, feel free to skip this opening tutorial
+    *  by calling the `.start()` function on `Chat.guide` instead of `.intro()`
+    *
+    *  NOTE: Please do not publish or share any of the code associated with this challenge. We've worked really
+    *  hard to build this material and publishing solutions diminishes its effectiveness.
+    */
+
+    // Your JavaScript code will go right here!
+    delete Chat.display;
+    delete Chat.fetch;
+    delete Chat.send;
+
+    var Bot = {};
+
+
+
+    /*------------------------------------*\
+    #Bot.log()
+    \*------------------------------------*/
+    /**
+     * Takes a string as its only input,
+     * and displays that string to in a bulleted list.
+     * Bot.log()  won't work unless there is a ul element
+     * visible on the page with the class .messages.
+     */
+    Bot.log = function(message) {
+        $('ul.messages').append('<li>' + message + '</li>');
+    };
+
+
+
+    /*------------------------------------*\
+    #Bot.listen()
+    \*------------------------------------*/
+    /**
+     * Once done fetching messages from the server, it will call a callback function,
+     * passing an array of strings as the only argument to the callback.
+     * Each string in that array is the text value of one chat message.
+     */
+    Bot.listen = function(callbackFunction) {
+        $.ajax({
+            url: Chat.resourceAddress,
+            data: { order: "-createdAt" },
+            success: function(response) {
+                return callbackFunction(response);
+            }
+        });
+    };
+
+
+
+    /*------------------------------------*\
+    #Bot.speak()
+    \*------------------------------------*/
+    /**
+     * When you pass it a message string, will build a message object out of it
+     * and send that object to the server.
+     */
+    Bot.speak = function(message) {
+        $.ajax({
+            type: "POST",
+            url: Chat.resourceAddress,
+            data: JSON.stringify({
+                text: Bot.name + ": " + message,
+                username: Bot.name
+                }),
+            dataType: "json",
+            sucess: Bot.log(Bot.name + ": " + message + " - @ " + new Date())
+        })
+    };
+
+
+
+    /*------------------------------------*\
+    #Bot.logAll()
+    \*------------------------------------*/
+    /**
+     * Log a list of messages.
+     */
+    Bot.logAll = function(list) {
+
+        return list.forEach(Bot.log);
+    }
+
+
+    /*------------------------------------*\
+    #Bot.brain()
+    \*------------------------------------*/
+    /**
+     * Bot analyze all the data he receive
+     * Here make decisions. Its the Bot Brain
+     */
+    Bot.brain = function(data) {
+
+        function actionable(response) {
+
+            function onlyHumans(message){
+                return message.username != "RoboChat" && message.username != Bot.name;
+            }
+
+            function onlyNew(message){
+                return Date.parse(message.createdAt) > Date.parse(Bot.lastAnalyzedAt);
+            }
+
+            function byDate(a, b){
+                return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+            }
+
+            return response.results.filter(onlyHumans).filter(onlyNew).sort(byDate).pop();
+        }
+
+        var input = actionable(data);
+
+
+        if ( input != null) {
+
+
+
+
+
+            var text = input.text,
+                author = input.username || text.substring(text.indexOf(':'), 0),
+                message = text.substring(text.indexOf(':')),
+                random = Math.random()*2;
+
+            Bot.log(text + " - @ " + new Date());
+            Bot.lastAnalyzedAt = new Date().toString();
+
+            if (/(\bgames\b)/g.test(text.toLowerCase())) {
+                delete Bot.status.waitingForUser;
+                delete Bot.status.saidHi;
+                Bot.speak(Bot.dictionary.gamesMenu1);
+                setTimeout(function(){Bot.speak(Bot.dictionary.gamesMenu2)},200);
+                setTimeout(function(){Bot.speak(Bot.dictionary.gamesMenu3)},400);
+                setTimeout(function(){Bot.speak(Bot.dictionary.gamesMenu4)},600);
+
+
+            } else if (/(\bhelp\b)/g.test(text.toLowerCase())) {
+                delete Bot.status.waitingForUser;
+                delete Bot.status.saidHi;
+                Bot.speak(Bot.dictionary.cmdEmail);
+                setTimeout(function(){Bot.speak(Bot.dictionary.cmdTwitter)},200);
+                setTimeout(function(){Bot.speak(Bot.dictionary.cmdAbout)},400);
+                setTimeout(function(){Bot.speak(Bot.dictionary.cmdXmas)},600);
+                setTimeout(function(){Bot.speak(Bot.dictionary.cmdGames)},800);
+                setTimeout(function(){Bot.speak(Bot.dictionary.cmdHelp)},1000);
+
+            } else if (/(\babout\b)/g.test(text.toLowerCase()) && !Bot.status.tellingAbout ) {
+                Bot.status.tellingAbout = 1;
+                return Bot.speak(Bot.dictionary.about1);
+
+            } else if ( /(\bhi\b|hello|hey|howdy|morning|who|evening|test|somebody)/g.test(text.toLowerCase()) && !Bot.status.waitingForUser && !Bot.status.saidHi ) {
+                Bot.status.waitingForUser = 1;
+                Bot.status.saidHi = 1;
+                delete Bot.status.didOuting;
+                return Bot.speak(Bot.dictionary.cheers + author + Bot.dictionary.exclamation);
+
+            } else if ( /(\bhackreactor\b)/g.test(text.toLowerCase()) && !Bot.status.waitingForUser ) {
+                Bot.status.waitingForUser = 1;
+                Bot.status.saidHi = 1;
+                delete Bot.status.didOuting;
+                Bot.speak(Bot.dictionary.magicLine1);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine2)},200);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine3)},400);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine4)},600);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine5)},800);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine6)},1000);
+                setTimeout(function(){Bot.speak(Bot.dictionary.magicLine7)},1200);
+
+            } else if ( /(..)+/g.test(text.toLowerCase()) && Bot.status.saidHi && Bot.status.waitingForUser) {
+                delete Bot.status.saidHi;
+                Bot.status.isPerplex = 1;
+                return Bot.speak(Bot.dictionary.intro);
+
+            } else if (Bot.status.isPerplex && Bot.status.waitingForUser) {
+                delete Bot.status.isPerplex;
+
+                return Bot.speak(author + Bot.dictionary.outing);
+
+            } else if (/(\bno\b)/g.test(text.toLowerCase()) && Bot.status.waitingForUser == 1) {
+                delete Bot.status.isPerplex;
+                delete Bot.status.waitingForUser;
+                return Bot.speak(Bot.dictionary.leaveAlone);
+
+            } else if (/(\byes\b)/g.test(text.toLowerCase()) && Bot.status.waitingForUser == 1) {
+                delete Bot.status.isPerplex;
+                return Bot.speak(Bot.dictionary.howToContact);
+
+            } else if (/(\bemail\b)/g.test(text.toLowerCase())) {
+                delete Bot.status.waitingForUser;
+                return Bot.speak(author + Bot.dictionary.myEmail);
+
+            } else if (/(\btwitter\b)/g.test(text.toLowerCase())) {
+                delete Bot.status.waitingForUser;
+                return Bot.speak(author + Bot.dictionary.myTwitter);
+
+
+            } else if (/(\bcontinue\b)/g.test(text.toLowerCase()) && Bot.status.tellingAbout == 1 ) {
+                Bot.status.tellingAbout = 2;
+                return Bot.speak(Bot.dictionary.about2);
+
+            } else if (/(\bcontinue\b)/g.test(text.toLowerCase()) && Bot.status.tellingAbout == 2 ) {
+                delete Bot.status.tellingAbout;
+                return Bot.speak(Bot.dictionary.about3);
+
+            } else if (/(bye|goodbye)/g.test(text.toLowerCase())) {
+                return Bot.speak(Bot.dictionary.bye);
+
+            } else if (/(.+)/g.test(text.toLowerCase()) && Bot.status.pingCounter >= 5) {
+                Bot.status.pingCounter = 0;
+                Bot.speak("If you need help, just type \< help \>");
+            }
+
+        }
+    }
+
+
+
+    /*------------------------------------*\
+    #Bot.start()
+    \*------------------------------------*/
+    /**
+     * Initialize the Chat
+     */
+    Bot.start = function(){
+
+
+        function refresh(){
+            Bot.listen(Bot.brain);
+            setTimeout(refresh,3000);
+        }
+        refresh();
+
+
+    }();
+
+
+
+    jQuery(document).ready(function() {
+
+        $('.messages').find('li').remove();
+        Bot.log(Bot.name + ": Initialized");
+        Bot.log(Bot.name + ": Searching around, no signs of humans in here yet...");
+
+    });
+
+
+    Bot.name = "Nick";
+    Bot.lastAnalyzedAt = new Date().toString();
+    Bot.status = {
+        pingCounter : 0
+    };
+    Bot.dictionary = {
+        cheers: "Hello ",
+        exclamation: "! ",
+        intro: "How you doing? I'm preparing for HeackReactor...",
+        perplex: "?!?",
+        perplex2: "?!...sorry I lost some bits",
+        help: "If you want a list of all supported commands type help",
+        outing: ", guess what? I'm just a javascript bot:p I've been coded to find awesome people like you, willing to do pair programming, prepare for HR and learn js together. Wanna join? Type \< yes, no, help \>",
+        leaveAlone: "Sure dude, no problem. In case u get bored with RoboChat, just type \< help \>",
+        howToContact: "Awesome! How do you prefer to get in touch? \< email, twitter, help \>",
+        myEmail: ", my email is: nick@balestra.ch (but hey, no spam please.)",
+        myTwitter: ", my twitter handle is @nickbalestra, roger me there! ",
+        spacer: "┊┊",
+        cmdEmail: "┊┊ type ┊┊ \< email \> ┈┈┈┈ to get my email",
+        cmdTwitter: "┊┊ type ┊┊ \< twitter \> ┈┈┈┈ to get my twitter",
+        cmdAbout: "┊┊ type ┊┊ \< about \> ┈┈┈┈ to learn more about this project",
+        cmdXmas: "┊┊ type ┊┊ \< hackreactor \> ┈┈┈┈ for some action",
+        cmdHelp: "┊┊ type ┊┊ \< help \> ┈┈┈┈ to see this list of commands again",
+        cmdGames: "┊┊ type ┊┊ \< games \> ┈┈┈┈ to see a list of games to play",
+        about1: "FYI - Nick Bot still in very alpha stage so please forgive him if things get edgy (Refactor needed asap)... WHY I CODED IT - THE STORY: Well its simple, I tried to prepare for the HR admission by studing as much js as I could for just 2 weeks and yes, I failed :( HR suggest me to take some time before applying again and so I did... type \< continue \> to keep reading",
+        about2: "...Today is about 2,5 months since my tech interview failure and I decided to come back to the chatbuilder to see if I did anyprogress. Well I was pretty amazed to see how my code changed, and what once took me 8 hours to complete today took me 2(cleanup included)... type \< continue \> to keep reading",
+        about3: "...So I tried to push myself harder and started this little bot project with a goal in mind: find other students preparing for HR in order to do pair programming. I tought that this was the perfect place for that. Thanks for reading the whole Nick Bot story, it was a pleasure push it through the interweb via an ajax post request for you :). If you want to get in touch, just tell me how \< email, twitter \>",
+        bye: "Hasta la vista baby",
+        magicLine1: "┈┈┈╭╮┈╭╮┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈",
+        magicLine2: "┈┈┈┃┃┈┃┃┈┈╱▔▔▔▔▔▔▔▔▔▔▔▔▔▔",
+        magicLine3: "┈┈┈┃┃┈┃┃┈┈▏@HACKREACTOR",
+        magicLine4: "┈┈┈┃╋┳╋┃┈┈▏☆ROCKS☆",
+        magicLine5: "┈┈╭┻━┓┃┃┈┈╲▂▂▂▂▂▂▂▂▂▂▂▂▂▂",
+        magicLine6: "┈┈┃┊━╯╯┃┈┈┈╱┈┈┈┈┈┈┈┈┈┈┈┈┈",
+        magicLine7: "┈┈╰╮┊┊╭╯ by @NICKBALESTRA",
+        gamesMenu1:"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈",
+        gamesMenu2:"┊┊ GAMES MENU",
+        gamesMenu3:"┊┊ coming soon",
+        gamesMenu4:"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈",
+        gamesMenu5:"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+    }
+
+
+    </script>
+
+    <h2>Borken Chat Bot Log</h2>
+
+    <ul class="messages">
+        <!-- once you save this code to a local `.html` file, you can delete these 3 fake, hard-coded li elements -->
+        <li>Mysterious_guide: Hey there! Let's build a chat application.</li>
+        <li>Mysterious_guide: Right now, there's actually no functionality in this chat client--it's just an inert page full of pre-written HTML that's being rendered by your browser.
+        <li>Mysterious_guide: But you can fix that--try looking at the page source to see how this page works.</li>
+    </ul>
+
+</body>
 </html>

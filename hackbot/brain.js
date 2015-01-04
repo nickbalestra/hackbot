@@ -1,7 +1,6 @@
 define(['underscorish', './user'], function (_, User) {
 
 
-//var User = require('./user');
     var Brain = (function() {
 
 

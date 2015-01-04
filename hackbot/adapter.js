@@ -39,7 +39,7 @@ define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], fu
                 this.robot.adapter.fetch();
                 tick = setTimeout(timer, 3000);
             })();
-            console.log("running");
+            console.log("running...");
         };
 
         // Public: Raw method for invoking the bot to stop.

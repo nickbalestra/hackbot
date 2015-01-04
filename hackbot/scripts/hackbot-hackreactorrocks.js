@@ -1,6 +1,6 @@
 define(['underscorish'], function (_) {
 
-    robot.command("hackreactor rocks", "bring some ascii action");
+    robot.command("hackreactor rocks", "Ascii action");
     var asciiLines = [
                         "┈┈┈╭╮┈╭╮┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈",
                         "┈┈┈┃┃┈┃┃┈┈╱▔▔▔▔▔▔▔▔▔▔▔▔▔▔",

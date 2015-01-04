@@ -103,6 +103,7 @@ define(function (require) {
         // Returns nothing.
         Robot.prototype.load = function(path) {
             var scriptsPath = path ? path + '/' : '../hackbot/scripts/';
+            console.log("Loading scripts at " + scriptsPath);
             require([scriptsPath + 'scripts'], function(toLoad){
                 for (var script in toLoad) {
                     require([scriptsPath + toLoad[script]]);
@@ -150,6 +151,7 @@ define(function (require) {
         //
         // Returns nothing.
         Robot.prototype.run = function() {
+            console.log("Starting adpter")
             return this.adapter.run();
         };
 

@@ -22,7 +22,7 @@ define(['underscorish'], function (_) {
             names.push(user);
         }
         msg.finish();
-        return msg.send("Those users were around recently: "+ names.join(', '));
+        return msg.send("Users that were recently in the chat: "+ names.join(', '));
     })
 
     robot.respond(/.*show.(\w+)/i, function(msg) {
@@ -32,9 +32,10 @@ define(['underscorish'], function (_) {
             if (user.msgHistory.length != null) {
                 var messages = _.map(user.msgHistory, function(message){
                     return message.text;
-                })
+                });
                 return msg.send((msg.match[1] == 'me' ? "You" : user.name) + ' previously said: ' + '"' + messages.join('" - "') + '"');
+            }
         } else
             return msg.send("" + msg.match[1] + "? Never heard of 'him");
-    })
+    });
 });

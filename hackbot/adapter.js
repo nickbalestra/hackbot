@@ -8,7 +8,7 @@ define(['underscorish'], function (_) {
 
     var Adapter = (function() {
 
-        // ## Adapter
+        // ## Adapters
         // `new Adapter(robot)`
         //
         // _An adapter is a specific interface to a chat source for robots._
@@ -31,7 +31,7 @@ define(['underscorish'], function (_) {
                 data: { order: "-createdAt" },
                 success: function(response) {
                     _.each( clean( _.map(response.results, format), normalize), function(msg){
-                        var user = this.robot.brain.userForName(msg.user);
+                        var user = this.robot.brain.userForName(msg.userName);
                         return this.robot.adapter.receive( new Message(user, msg.text, msg.id, msg.createdAt) );
                     });
                 }
@@ -171,7 +171,7 @@ define(['underscorish'], function (_) {
             return false;
 
         function onlyHumans(message) {
-            return message.user != "RoboChat" && message.user != this.robot.name;
+            return message.userName != "RoboChat" && message.userName != this.robot.name;
         }
         function onlyNew(message) {
             return Date.parse(message.createdAt) > Date.parse(lastReceivedAt);
@@ -199,7 +199,7 @@ define(['underscorish'], function (_) {
 
         return {
             'id': message.objectId,
-            'user': author,
+            'userName': author,
             'text': text,
             'createdAt': createdAt
         };

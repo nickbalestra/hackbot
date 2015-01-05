@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>hackbot-hackreactor.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hackbot-hackreactor.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'underscorish'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(_)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="hackreactor-com-plugin">hackreactor.com plugin</h2>
+<p><em>A little plugin that consume kimonolabs APIs.</em></p>
+<p><strong>apikey</strong> - Your kimonolabs.com api key.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.help(robot.name + <span class="hljs-string">" hr program"</span>, <span class="hljs-string">"show next courses as published on hackreactor.com/program "</span>);
+    robot.help(robot.name + <span class="hljs-string">" hr students (name | twitter | github | linkedin | site)"</span>, <span class="hljs-string">"take and list relative students data from hackreactor.com/students "</span>);
+
+    <span class="hljs-keyword">var</span> apikey = <span class="hljs-string">''</span>,
+    replies = {
+        program: [<span class="hljs-string">"Next HR cohorts starts on $... onward!"</span>, <span class="hljs-string">"Upcoming HR programs will start on $"</span>, <span class="hljs-string">"Next HR classes begins on $"</span>],
+        students: [<span class="hljs-string">"Ready to read all %? Here we go: $"</span>, <span class="hljs-string">"$ ....and with the latest one should be %"</span>]
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="apicall">apiCall</h3>
+<p><code>apiCall(endpoint, filter, success, msg)</code></p>
+<p><strong>Private:</strong> <em>An helper function which create the api call.</em></p>
+<p><strong>endpoint</strong>    - Endpoint of the API to call: /students and /program,
+                  taking data respectively from hackreactor.com/students and hackreactor.com/program.</p>
+<p><strong>filter</strong>    - Filter to be applied on the endpoint.</p>
+<p><strong>success</strong>    - A success callback function to be runned against the response.</p>
+<p><strong>msg</strong>    - A Message object.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">apiCall</span><span class="hljs-params">(endpoint, filter, success, msg)</span> </span>{
+        $.ajax({
+            url: <span class="hljs-string">'https://www.kimonolabs.com/api/42cpjfsk'</span>,
+            data: { kimpath1: endpoint,
+                    apikey: apikey},
+            crossDomain: <span class="hljs-literal">true</span>,
+            dataType: <span class="hljs-string">'jsonp'</span>,
+            success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+                success(response, endpoint, filter, msg);
+            }
+        });
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="buildreply">buildReply</h3>
+<p><code>buildReply(response, endpoint, filter, msg)</code></p>
+<p><strong>Private:</strong> <em>An helper function which build the reply, to be used as callback inside the apiCall helper.</em></p>
+<p><strong>response</strong>    - Result object returned from the API.</p>
+<p><strong>endpoint</strong>    - Endpoint of the API to call: /students and /program,
+                  taking data respectively from hackreactor.com/students and hackreactor.com/program.</p>
+<p><strong>filter</strong>    - Filter to be applied on the endpoint.</p>
+<p><strong>msg</strong>    - A Message object.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">buildReply</span><span class="hljs-params">(response, endpoint, filter, msg)</span> </span>{
+        <span class="hljs-keyword">if</span> ( response.count &gt; <span class="hljs-number">0</span> ) {
+            <span class="hljs-keyword">var</span> reply = msg.random(replies[endpoint]),
+                elements = _.filter( (_.map(response.results[endpoint], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span></span>{
+                    <span class="hljs-keyword">return</span> element[filter];
+                    })), notEmpty),
+                total = elements.length;
+            <span class="hljs-keyword">return</span> msg.reply(reply.replace(<span class="hljs-string">"%"</span>, total).replace(<span class="hljs-string">"$"</span>, elements.join( <span class="hljs-string">' * '</span> )) );
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notEmpty</span><span class="hljs-params">(string)</span></span>{
+        <span class="hljs-keyword">return</span> string.length &gt; <span class="hljs-number">0</span>;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr program)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'program'</span>, <span class="hljs-string">'date'</span>, buildReply, msg);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr students names)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'students'</span>, <span class="hljs-string">'name'</span>, buildReply, msg);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr students github)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'students'</span>, <span class="hljs-string">'github'</span>, buildReply, msg);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr students linkedin)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'students'</span>, <span class="hljs-string">'linkedin'</span>, buildReply, msg);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr students site)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'students'</span>, <span class="hljs-string">'personalsite'</span>, buildReply, msg);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(hr students twitter)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        apiCall(<span class="hljs-string">'students'</span>, <span class="hljs-string">'twitter'</span>, buildReply, msg);
+    });
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

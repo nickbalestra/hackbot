@@ -1,6 +1,6 @@
 define(function () {
 
-    // ## User
+    // ## Users
     // `new User(name, options)`
     //
     // _Represents a participating user in the chat._
@@ -11,17 +11,13 @@ define(function () {
     User = (function() {
         function User(name, options) {
             this.name = name;
-            if (options == null) {
-                // TODO: for loop below can be moved in here
-                options = {};
+            if (options != null) {
+                for (k in options || {}) {
+                    this[k] = options[k];
+                }
             }
-            for (k in options || {}) {
-                this[k] = options[k];
-            }
-            // TODO: Add msgHistory using options and remove it from being hardcoded in here
-            this.msgHistory = [];
         }
-
+        
         return User;
     })();
     return User;

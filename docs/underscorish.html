@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>underscorish.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>underscorish.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+    <span class="hljs-keyword">var</span> _ = { };
+
+    (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="each">each</h3>
+<p><code>_.each(collection, iterator)</code></p>
+<p><strong>Public:</strong> <em>Traverse a collection and run an iterator over each element of the collection.</em></p>
+<p><strong>collection</strong>    - A list of items in an array or object.</p>
+<p><strong>iterator</strong> - A Function to be called on each item of the collection.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.each = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(collection, iterator)</span> </span>{
+            <span class="hljs-keyword">if</span> ( collection === <span class="hljs-literal">undefined</span> )
+                <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (collection.length) {
+                <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; collection.length; i++)
+                    iterator(collection[i], i, collection);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> collection) {
+                    iterator(collection[key], key, collection);
+                }
+            }
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="map">map</h3>
+<p><code>_.map(array, iterator)</code></p>
+<p><strong>Public:</strong> <em>Project an array by transforming each of its items via an iterator.</em></p>
+<p><strong>array</strong>    - An array.</p>
+<p><strong>iterator</strong> - A Function to be called to project each item of the array.</p>
+<p>Returns the projected array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.map = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array, iterator)</span> </span>{
+            <span class="hljs-keyword">var</span> mapped = [];
+            _.each(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
+                mapped.push(iterator(item));
+            })
+            <span class="hljs-keyword">return</span> mapped;
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="filter">filter</h3>
+<p><code>_.filter(array, iterator)</code></p>
+<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
+<p><strong>array</strong>    - An array.</p>
+<p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
+<p>Returns the filtered array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array, iterator)</span> </span>{
+            <span class="hljs-keyword">var</span> filtered = [];
+            _.each(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
+                <span class="hljs-keyword">if</span>(iterator(item))
+                    filtered.push(item);
+            })
+            <span class="hljs-keyword">return</span> filtered;
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="reduce">reduce</h3>
+<p><code>_.reduce(collection, iterator, initialValue)</code></p>
+<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
+<p><strong>collection</strong>    - An array.</p>
+<p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
+<p><strong>initialValue</strong> - A test function to be called to to filter the array.</p>
+<p>Returns the filtered array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.reduce = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(collection, iterator, initialValue)</span> </span>{
+           initialValue = initialValue || <span class="hljs-number">0</span>;
+            _.each(collection, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+               initialValue = iterator(initialValue, value);
+            });
+           <span class="hljs-keyword">return</span> initialValue;
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="every">every</h3>
+<p><code>_.every(array, iterator)</code></p>
+<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
+<p><strong>array</strong>    - An array.</p>
+<p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
+<p>Returns the filtered array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.every = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(collection, iterator)</span> </span>{
+            <span class="hljs-keyword">return</span> _.reduce(collection, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(wasTrue, value)</span></span>{
+                <span class="hljs-keyword">if</span> (wasTrue)
+                    <span class="hljs-keyword">if</span>(iterator)
+                        <span class="hljs-keyword">return</span> iterator(value) ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">else</span>
+                        <span class="hljs-keyword">return</span> (value) ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">else</span>
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }, <span class="hljs-literal">true</span>);
+        };
+
+
+    })();
+    <span class="hljs-keyword">return</span> _ ;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

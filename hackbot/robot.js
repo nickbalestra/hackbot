@@ -118,8 +118,8 @@ define(function (require) {
 
         };
 
-        // ### command
-        // `robot.command(command, description)`
+        // ### help
+        // `robot.help(command, description)`
         //
         // **Public:** _Adds commands for help reference._
         //
@@ -128,7 +128,7 @@ define(function (require) {
         // **description** - A string explaining the command.
         //
         // Returns nothing.
-        Robot.prototype.command = function(command, description){
+        Robot.prototype.help = function(command, description){
             return this.commands.push({command: command, description: description});
         };
 

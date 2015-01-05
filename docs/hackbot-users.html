@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>hackbot-users.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hackbot-users.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'underscorish'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(_)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="users-plugin">users plugin</h2>
+<p><em>Retrieve users and their messages.</em></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.help(robot.name + <span class="hljs-string">" chat users"</span>, <span class="hljs-string">"list all users who chatted in here"</span>);
+    robot.help(robot.name + <span class="hljs-string">" chat history"</span>, <span class="hljs-string">"show all my messages"</span>);
+    robot.help(robot.name + <span class="hljs-string">" hackbot chat history [name]"</span>, <span class="hljs-string">"show all messages from [name] - case sensitive"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.hear(<span class="hljs-regexp">/(.)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        <span class="hljs-keyword">var</span> user = msg.robot.brain.userForName(msg.message.user.name);
+        user.history.push({
+            text: msg.message.text,
+            id: msg.message.id,
+            createdAt: msg.message.createdAt
+            });
+        msg.robot.brain.backup();
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/.*(chat users)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        <span class="hljs-keyword">var</span> users = msg.robot.brain.users();
+        <span class="hljs-keyword">return</span> msg.send(<span class="hljs-string">"Users that were recently in chat: "</span>+ users.join(<span class="hljs-string">', '</span>));
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/.*chat history.(\w+)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        <span class="hljs-keyword">var</span> name = msg.match[<span class="hljs-number">1</span>] == <span class="hljs-string">'me'</span> ? msg.message.user.name : msg.match[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">var</span> user = (msg.robot.brain.data.users[name] != <span class="hljs-literal">null</span>) ? msg.robot.brain.data.users[name] : <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">if</span> (user) {
+            <span class="hljs-keyword">if</span> (user.history.length != <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">var</span> messages = _.map(user.history, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span></span>{
+                    <span class="hljs-keyword">return</span> message.text;
+                });
+                <span class="hljs-keyword">return</span> msg.send((msg.match[<span class="hljs-number">1</span>] == <span class="hljs-string">'me'</span> ? <span class="hljs-string">"You"</span> : user.name) + <span class="hljs-string">' previously said: '</span> + <span class="hljs-string">'"'</span> + messages.join(<span class="hljs-string">'" - "'</span>) + <span class="hljs-string">'"'</span>);
+            }
+        } <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">return</span> msg.send(<span class="hljs-string">""</span> + msg.match[<span class="hljs-number">1</span>] + <span class="hljs-string">"? Never heard of 'him"</span>);
+    });
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

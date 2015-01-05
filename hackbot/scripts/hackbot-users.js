@@ -1,13 +1,16 @@
 define(['underscorish'], function (_) {
 
-    robot.command("hackbot chat users", "list all users who chatted in here");
-    robot.command("hackbot chat me", "show all my messages");
-    robot.command("hackbot chat [name]", "show all messages from [name] - case sensitive");
+    // ## users plugin
+    //
+    // _Retrieve users and their messages._
+    robot.help(robot.name + " chat users", "list all users who chatted in here");
+    robot.help(robot.name + " chat history", "show all my messages");
+    robot.help(robot.name + " hackbot chat history [name]", "show all messages from [name] - case sensitive");
 
-    //listen to everything and update brain data on users
+    // ### Listener
     robot.hear(/(.)/i, function(msg) {
         var user = msg.robot.brain.userForName(msg.message.user.name);
-        user.msgHistory.push({
+        user.history.push({
             text: msg.message.text,
             id: msg.message.id,
             createdAt: msg.message.createdAt
@@ -15,22 +18,19 @@ define(['underscorish'], function (_) {
         msg.robot.brain.backup();
     });
 
+    // ### Listener
     robot.respond(/.*(chat users)/i, function(msg) {
-        var users = msg.robot.brain.data.users;
-        var names = [];
-        for (user in users) {
-            names.push(user);
-        }
-        msg.finish();
-        return msg.send("Users that were recently in the chat: "+ names.join(', '));
-    })
+        var users = msg.robot.brain.users();
+        return msg.send("Users that were recently in chat: "+ users.join(', '));
+    });
 
-    robot.respond(/.*chat.(\w+)/i, function(msg) {
+    // ### Listener
+    robot.respond(/.*chat history.(\w+)/i, function(msg) {
         var name = msg.match[1] == 'me' ? msg.message.user.name : msg.match[1];
         var user = (msg.robot.brain.data.users[name] != null) ? msg.robot.brain.data.users[name] : false;
         if (user) {
-            if (user.msgHistory.length != null) {
-                var messages = _.map(user.msgHistory, function(message){
+            if (user.history.length != null) {
+                var messages = _.map(user.history, function(message){
                     return message.text;
                 });
                 return msg.send((msg.match[1] == 'me' ? "You" : user.name) + ' previously said: ' + '"' + messages.join('" - "') + '"');

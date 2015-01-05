@@ -1,5 +1,8 @@
 define(function () {
 
+    // ## Ping script
+    //
+    // _Reply to ping and similar._
     var phrases = [
         "Yes, master?",
         "At your service",
@@ -41,15 +44,17 @@ define(function () {
         "Ah, at last",
         "I'm here",
         "Something need doing?"
-];
+    ];
 
-var name_regex = new RegExp(robot.name + "\\?$", "i");
+    var name_regex = new RegExp(robot.name + "\\?$", "i");
 
+    // ### Listener
     robot.hear(name_regex, function(msg) {
         return msg.reply(msg.random(phrases));
     });
 
-    return robot.hear(/ping$/i, function(msg) {
+    // ### Listener
+    robot.hear(/ping$/i, function(msg) {
         return msg.send('pong');
     });
 });

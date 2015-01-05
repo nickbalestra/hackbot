@@ -31,7 +31,7 @@ define(['underscorish', './user'], function (_, User) {
         // Returns the instance.
         Brain.prototype.set = function(key, value) {
             this.data._private[key] = value;
-            this.backup();
+            this.save();
             return this;
         };
 
@@ -56,7 +56,7 @@ define(['underscorish', './user'], function (_, User) {
             var value;
             if (value = this.data._private[key])
                 delete this.data._private[key];
-            this.backup();
+            this.save();
             return this;
         };
 
@@ -72,30 +72,43 @@ define(['underscorish', './user'], function (_, User) {
             return JSON.parse(localStorage.getItem('data'));
         };
 
+        // ### users
+        // `brain.users()`
+        //
+        // **Public:** _Get an Array of User objects stored in the brain._
+        //
+        // Returns an Array of User objects.
+        Brain.prototype.users = function() {
+            var names = _.map(this.data.users, function(user){
+                return user.name;
+            });
+            return names;
+        };
+
         // ### userForName
         // `brain.userForName(name)`
         //
-        // **Public:** _Get a User object given a name._
+        // **Public:** _Get a User object given a name. If it doesn't exist create a new one._
         //
         // Returns a User instance for the user with the specified name.
         Brain.prototype.userForName = function(name) {
             var user = this.data.users[name];
             if (!user) {
-                user = new User(name);
+                user = new User(name, { 'history' : [] });
                 this.data.users[name] = user;
             }
-            this.backup();
+            this.save();
             return user;
         };
 
-        // ### backup
-        // `brain.backup()`
+        // ### save (backup)
+        // `brain.save()` or `brain.backup()`
         //
         // **Public:** _'save' brain data to localstorate so that 'brain' scripts can handle
         // persisting._
         //
         // Returns nothing
-        Brain.prototype.backup = function(){
+        Brain.prototype.save = Brain.prototype.backup = function(){
             localStorage.setItem('data', JSON.stringify(this.data));
         };
 
@@ -123,9 +136,6 @@ define(['underscorish', './user'], function (_, User) {
         Brain.prototype.clearBackup = function(){
             localStorage.clear();
         };
-
-
-
 
 
         return Brain

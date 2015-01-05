@@ -27,7 +27,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>Defining the robotbot and its dependencies</p>
+              <p>Defining robots and their dependencies</p>
 
             </div>
             
@@ -202,8 +202,8 @@ Defaul to hackbot/scripts.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <h3 id="command">command</h3>
-<p><code>robot.command(command, description)</code></p>
+              <h3 id="help">help</h3>
+<p><code>robot.help(command, description)</code></p>
 <p><strong>Public:</strong> <em>Adds commands for help reference.</em></p>
 <p><strong>command</strong>    - A string containing the command to be run.</p>
 <p><strong>description</strong> - A string explaining the command.</p>
@@ -211,7 +211,7 @@ Defaul to hackbot/scripts.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.command = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command, description)</span></span>{
+            <div class="content"><div class='highlight'><pre>        Robot.prototype.help = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command, description)</span></span>{
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commands.push({command: command, description: description});
         };</pre></div></div>
             

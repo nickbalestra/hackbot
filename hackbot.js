@@ -14,12 +14,14 @@ requirejs.config({
 
 
 // Start loading the main hackbot file.
-requirejs(['hackbot/robot'], function(){
+requirejs(['hackbot/robot', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], function(){
 
     // Once the needed code is loaded, instanciate a robot
     // You can pass it a name, default is hackbot
     // if we want to keep using the username prompt of chatbuilder to name our bot, just pass Chat.username to the constructor
-    robot = new Robot();
+
+    robot = new Robot(Chat.username != 'anonymous' ? Chat.username : null);
     robot.load();
     robot.run();
+
 });

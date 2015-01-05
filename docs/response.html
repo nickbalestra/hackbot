@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>response.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>response.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="responses">Responses</h2>
+<p><code>new Response(robot, message, match)</code></p>
+<p><strong>Public:</strong> <em>Responses are sent to matching listeners. Messages know about the
+content and user that made the original message, and how to reply back to
+them.</em></p>
+<p><strong>robot</strong> - A Robot instance.</p>
+<p><strong>message</strong> - A Message instance.</p>
+<p><strong>match</strong> - A Match object from the successful Regex match.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> Response = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Response</span><span class="hljs-params">(robot, message, match)</span> </span>{
+            <span class="hljs-keyword">this</span>.robot = robot;
+            <span class="hljs-keyword">this</span>.message = message;
+            <span class="hljs-keyword">this</span>.match = match;
+            <span class="hljs-keyword">this</span>.envelope = {
+                user: <span class="hljs-keyword">this</span>.message.user,
+                message: <span class="hljs-keyword">this</span>.message
+            };
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="send">send</h3>
+<p><code>response.send(strings...)</code></p>
+<p><strong>Public:</strong> <em>Posts a message back to the chat source.</em></p>
+<p><strong>strings</strong> - One or more strings to be posted. The order of these strings
+          should be kept intact.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Response.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">1</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>) : [];
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.send(<span class="hljs-keyword">this</span>.envelope, <span class="hljs-built_in">Array</span>.prototype.slice.call(strings) );
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="emote">emote</h3>
+<p><code>response.emote(strings...)</code></p>
+<p><strong>Public:</strong> <em>Posts an emote back to the chat source.</em></p>
+<p><strong>strings</strong> - One or more strings to be posted. The order of these strings
+          should be kept intact.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Response.prototype.emote = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">1</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>) : [];
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.emote(<span class="hljs-keyword">this</span>.envelope, <span class="hljs-built_in">Array</span>.prototype.slice.call(strings) );
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="reply">reply</h3>
+<p><code>response.reply(strings...)</code></p>
+<p><strong>Public:</strong> _Posts a message mentioning the current user.</p>
+<p><strong>strings</strong> - One or more strings to be posted. The order of these strings
+          should be kept intact.</p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Response.prototype.reply = Response.prototype.mention = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> strings = <span class="hljs-number">1</span> &lt;= <span class="hljs-built_in">arguments</span>.length ? <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>) : [];
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.robot.adapter.reply(<span class="hljs-keyword">this</span>.envelope, <span class="hljs-built_in">Array</span>.prototype.slice.call(strings) );
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="random">random</h3>
+<p><code>response.random(items)</code></p>
+<p><strong>Public:</strong> <em>Picks a random item from the given items.</em></p>
+<p><strong>items</strong> - An Array of items.</p>
+<p>Returns a random item.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Response.prototype.random = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items)</span> </span>{
+            <span class="hljs-keyword">return</span> items[<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * items.length)];
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h3 id="finish">finish</h3>
+<p><code>response.finish()</code></p>
+<p><strong>Public:</strong> <em>Tell the message to stop dispatching to listeners.</em></p>
+<p>Returns nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Response.prototype.finish = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.message.finish();
+        };
+
+        <span class="hljs-keyword">return</span> Response;
+    })();
+    <span class="hljs-keyword">return</span> Response;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

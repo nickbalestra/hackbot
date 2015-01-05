@@ -1,6 +1,6 @@
-// Defining the bot and its dependencies
+// Defining adapters and their dependencies
 
-define(['underscorish', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], function (_) {
+define(['underscorish'], function (_) {
 
     var tick,
         tmpCache = [],

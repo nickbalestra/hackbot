@@ -1,4 +1,4 @@
-// Defining the robotbot and its dependencies
+// Defining robots and their dependencies
 
 define(function (require) {
 
@@ -11,10 +11,10 @@ define(function (require) {
 
     Robot = (function(name) {
 
-        // ## Robot
+        // ## Robots
         // `new Robot(name)`
         //
-        // _Robot receive messages from a chat source, and
+        // _Robots receive messages from a chat source, and
         // dispatch them to matching listeners._
         //
         // **name** - A String of the robot name, defaults to Hackbot.

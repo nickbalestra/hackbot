@@ -1,4 +1,4 @@
-// Defining the bot and its dependencies
+// Defining the robotbot and its dependencies
 
 define(function (require) {
 
@@ -121,7 +121,7 @@ define(function (require) {
         // ### command
         // `robot.command(command, description)`
         //
-        // **Public:** _Adds commands reference for help reference._
+        // **Public:** _Adds commands for help reference._
         //
         // **command**    - A string containing the command to be run.
         //

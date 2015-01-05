@@ -3,8 +3,8 @@ define(['underscorish'], function (_) {
     // A little plugin that consume kimonolabs APIS
     //
     // apikey    - Your kimonolabs.com api key.
-    robot.command("hackbot show program", "show next courses as published on hackreactor.com/program ");
-    robot.command("hackbot show students (name | twitter | github | linkedin | site)", "take and list relative students data from hackreactor.com/students ");
+    robot.command("hackbot hr program", "show next courses as published on hackreactor.com/program ");
+    robot.command("hackbot hr students (name | twitter | github | linkedin | site)", "take and list relative students data from hackreactor.com/students ");
 
     var apikey = 'RCHyU822jWGpQBfA4mj6Mwk0ekY6YIos',
     replies = {
@@ -53,27 +53,27 @@ define(['underscorish'], function (_) {
         return string.length > 0;
     }
 
-    robot.respond(/(show program)/i, function(msg) {
+    robot.respond(/(hr program)/i, function(msg) {
         apiCall('program', 'date', buildReply, msg);
     });
 
-    robot.respond(/(show students names)/i, function(msg) {
+    robot.respond(/(hr students names)/i, function(msg) {
         apiCall('students', 'name', buildReply, msg);
     });
 
-    robot.respond(/(show students github)/i, function(msg) {
+    robot.respond(/(hr students github)/i, function(msg) {
         apiCall('students', 'github', buildReply, msg);
     });
 
-    robot.respond(/(show students linkedin)/i, function(msg) {
+    robot.respond(/(hr students linkedin)/i, function(msg) {
         apiCall('students', 'linkedin', buildReply, msg);
     });
 
-    robot.respond(/(show students site)/i, function(msg) {
+    robot.respond(/(hr students site)/i, function(msg) {
         apiCall('students', 'personalsite', buildReply, msg);
     });
 
-    return robot.respond(/(show students twitter)/i, function(msg) {
+    return robot.respond(/(hr students twitter)/i, function(msg) {
         apiCall('students', 'twitter', buildReply, msg);
     });
 

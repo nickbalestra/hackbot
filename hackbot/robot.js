@@ -28,6 +28,7 @@ define(function (require) {
             this.Response = Response;
             this.adapter = new Adapter(this);
             this.brain = new Brain(this);
+            console.log(this.name + " says: Bite my shiny metal ass!");
         }
 
 

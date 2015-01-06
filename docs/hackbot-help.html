@@ -46,7 +46,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    robot.help(robot.name + <span class="hljs-string">" help"</span>, <span class="hljs-string">"list all available hackbot commands"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    robot.help(<span class="hljs-string">"help"</span>, <span class="hljs-string">"list all available hackbot commands"</span>);</pre></div></div>
             
         </li>
         
@@ -64,8 +64,27 @@
             <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/help/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
         _.each(msg.robot.commands, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command)</span></span>{
             msg.send(<span class="hljs-string">"\&lt; "</span>+ command.command +<span class="hljs-string">" \&gt; - "</span> + command.description)
-        })
-    })
+        });
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.hear(<span class="hljs-regexp">/help/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+        _.each(msg.robot.commands, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command)</span></span>{
+            msg.send(<span class="hljs-string">"\&lt; "</span>+ command.command +<span class="hljs-string">" \&gt; - "</span> + command.description)
+        });
+    });
 
 });</pre></div></div>
             

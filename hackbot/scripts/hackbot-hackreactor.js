@@ -2,7 +2,7 @@ define(['underscorish'], function (_) {
 
     // ## hackreactor.com plugin
     //
-    // _A little plugin that consume kimonolabs APIs._
+    // _A little plugin that retrieve data from hackreactor.com by consuming kimonolabs APIs._
     //
     // **apikey** - Your kimonolabs.com api key.
     robot.help(robot.name + " hr program", "show next courses as published on hackreactor.com/program ");

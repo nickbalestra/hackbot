@@ -1,6 +1,6 @@
 // Defining adapters and their dependencies
 
-define(['underscorish'], function (_) {
+define(['underscorish', 'chatbuilder'], function (_) {
 
     var tick,
         tmpCache = [],

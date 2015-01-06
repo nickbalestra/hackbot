@@ -1,27 +1,52 @@
-// For any third party dependencies, like jQuery, place them in the lib folder.
-// For any hackbot plugin, place it in the scripts directory.
-
-// Configure loading modules from the lib directory,
-// except for 'hackbot' ones, which are in a sibling
-// directory.
+// Getting Started With Hackbot
 requirejs.config({
     baseUrl: 'lib',
     paths: {
         hackbot: '../hackbot',
-        underscorish: 'underscorish'
+        underscorish: 'underscorish',
+        chatbuilder: 'http://chatbuilder.hackreactor.com/ChatBuilder'
     }
 });
 
 
-// Start loading the main hackbot file.
-requirejs(['hackbot/robot', 'http://chatbuilder.hackreactor.com/ChatBuilder.js'], function(){
+// Define dependencies
+requirejs(['hackbot/robot', 'chatbuilder'], function(){
 
-    // Once the needed code is loaded, instanciate a robot
-    // You can pass it a name, default is hackbot
-    // if we want to keep using the username prompt of chatbuilder to name our bot, just pass Chat.username to the constructor
-
+    // **Launch your Hackbot:** <br>
+    // Create a Robot instance and give it a name;
+    // load scripts defined in script.js
+    // and start the robot adapter, thats it.
     robot = new Robot(Chat.username != 'anonymous' ? Chat.username : null);
     robot.load();
     robot.run();
-
 });
+
+
+// ## Documentation Index:
+//
+// ### Hackbot Core
+// - [robot.js](robot.html)
+// - [brain.js](brain.html)
+// - [listener.js](listener.html)
+// - [message.js](message.html)
+// - [response.js](response.html)
+// - [user.js](user.html)
+//
+// ### Hackbot Adapter
+// - [adapter.js](adapter.html)
+//
+// ### Libraries
+// - [underscorish.js](underscorish.html)
+//
+// ### Scripts
+// - [scripts.js](scripts.html)
+//  - [hackbot-help.js](hackbot-help.html)
+//  - [hackbot-about.js](hackbot-about.html)
+//  - [hackbot-ping.js](hackbot-ping.html)
+//  - [hackbot-hello.js](hackbot-hello.html)
+//  - [hackbot-thankyou.js](hackbot-thankyou.html)
+//  - [hackbot-log.js](hackbot-log.html)
+//  - [hackbot-users.js](hackbot-users.html)
+//  - [hackbot-ambush.js](hackbot-ambush.html)
+//  - [hackbot-hackreactor.js](hackbot-hackreactor.html)
+//  - [hackbot-hackreactorrocks.js](hackbot-hackreactorrocks.html)

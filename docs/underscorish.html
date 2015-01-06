@@ -47,9 +47,10 @@
               </div>
               <h3 id="each">each</h3>
 <p><code>_.each(collection, iterator)</code></p>
-<p><strong>Public:</strong> <em>Traverse a collection and run an iterator over each element of the collection.</em></p>
-<p><strong>collection</strong>    - A list of items in an array or object.</p>
-<p><strong>iterator</strong> - A Function to be called on each item of the collection.</p>
+<p><strong>Public:</strong> <em>Iterates over elements of a collection, executing the callback for each element.
+The callback is invoked with three arguments: (value, index|key, collection).</em></p>
+<p><strong>collection</strong>    -  (Array|Object): The collection to iterate over.</p>
+<p><strong>iterator</strong> - (Function): The function called per iteration.</p>
 <p>Returns nothing.</p>
 
             </div>
@@ -77,15 +78,16 @@
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <h3 id="map">map</h3>
-<p><code>_.map(array, iterator)</code></p>
-<p><strong>Public:</strong> <em>Project an array by transforming each of its items via an iterator.</em></p>
-<p><strong>array</strong>    - An array.</p>
-<p><strong>iterator</strong> - A Function to be called to project each item of the array.</p>
-<p>Returns the projected array.</p>
+<p><code>_.map(collection, iterator)</code></p>
+<p><strong>Public:</strong> <em>Creates an array of values by running each element in the collection through the callback.
+The callback is invoked with three arguments: (value, index|key, collection)..</em></p>
+<p><strong>collection</strong>    - (Array|Object): The collection to iterate over.</p>
+<p><strong>iterator</strong> - (Function): The function called per iteration.</p>
+<p>Returns (Array): Returns a new array of the results of each callback execution.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        _.map = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array, iterator)</span> </span>{
+            <div class="content"><div class='highlight'><pre>        _.map = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(collection, iterator)</span> </span>{
             <span class="hljs-keyword">var</span> mapped = [];
             _.each(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
                 mapped.push(iterator(item));
@@ -103,15 +105,16 @@
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <h3 id="filter">filter</h3>
-<p><code>_.filter(array, iterator)</code></p>
-<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
-<p><strong>array</strong>    - An array.</p>
-<p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
-<p>Returns the filtered array.</p>
+<p><code>_.filter(collection, iterator)</code></p>
+<p><strong>Public:</strong> <em>terates over elements of a collection, returning an array of all elements
+the callback returns truthy for. The callback is invoked with three arguments: (value, index|key, collection).</em></p>
+<p><strong>collection</strong>    - (Array|Oject): The collection to iterate over.</p>
+<p><strong>iterator</strong> -  (Function): The function called per iteration.</p>
+<p>Returns (Array): Returns a new array of elements that passed the callback check.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        _.filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array, iterator)</span> </span>{
+            <div class="content"><div class='highlight'><pre>        _.filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(collection, iterator)</span> </span>{
             <span class="hljs-keyword">var</span> filtered = [];
             _.each(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
                 <span class="hljs-keyword">if</span>(iterator(item))
@@ -131,11 +134,13 @@
               </div>
               <h3 id="reduce">reduce</h3>
 <p><code>_.reduce(collection, iterator, initialValue)</code></p>
-<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
-<p><strong>collection</strong>    - An array.</p>
-<p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
-<p><strong>initialValue</strong> - A test function to be called to to filter the array.</p>
-<p>Returns the filtered array.</p>
+<p><strong>Public:</strong> <em>Reduces a collection to a value which is the accumulated result of running each element in the
+collection through the callback, where each successive callback execution consumes the return value of the
+previous execution. If not provided initialValuedfault to 0. The callback is invoked with two arguments; (initialValue, value).</em></p>
+<p><strong>collection</strong>    - (Array|Object): The collection to iterate over.</p>
+<p><strong>iterator</strong> - (Function): The function called per iteration.</p>
+<p><strong>initialValue</strong> -  (*): Initial value of the accumulator.</p>
+<p>Returns the accumulated value.</p>
 
             </div>
             
@@ -157,11 +162,12 @@
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <h3 id="every">every</h3>
-<p><code>_.every(array, iterator)</code></p>
-<p><strong>Public:</strong> <em>Filter an array by running a test iterator.</em></p>
-<p><strong>array</strong>    - An array.</p>
+<p><code>_.every(collection, iterator)</code></p>
+<p><strong>Public:</strong> <em>Checks if the given callback returns truthy value for <strong>all</strong> elements of a collection.
+The callback is invoked with three arguments; (value, index|key, collection)..</em></p>
+<p><strong>collection</strong>    - (Array|Object): The collection to iterate over.</p>
 <p><strong>iterator</strong> - A test function to be called to to filter the array.</p>
-<p>Returns the filtered array.</p>
+<p>Returns (boolean): Returns true if all elements passed the callback check, else false.</p>
 
             </div>
             

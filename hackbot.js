@@ -50,3 +50,5 @@ requirejs(['hackbot/robot', 'chatbuilder'], function(){
 //  - [hackbot-ambush.js](hackbot-ambush.html)
 //  - [hackbot-hackreactor.js](hackbot-hackreactor.html)
 //  - [hackbot-hackreactorrocks.js](hackbot-hackreactorrocks.html)
+//
+// Hackbot is heavily inspired by Hubot and its architecture is “almost” identical. For other scripts to be ported to hackbot you can then check the [http://hubot-script-catalog.herokuapp.com/">](hubot scripts cataloge)

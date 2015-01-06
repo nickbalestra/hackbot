@@ -57,15 +57,28 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <h3 id="listeners">Listeners</h3>
+              <h3 id="listener">Listener</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    robot.respond(<span class="hljs-regexp">/(thank).*/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
         <span class="hljs-keyword">return</span> msg.send(msg.random(response));
-    });
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="listener">Listener</h3>
 
-    robot.hear(<span class="hljs-regexp">/thanks (.*)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot.hear(<span class="hljs-regexp">/thanks (.*)/i</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
         <span class="hljs-keyword">var</span> name = msg.match[<span class="hljs-number">1</span>];
         <span class="hljs-keyword">if</span> (name.toLowerCase() === robot.name.toLowerCase()) {
             <span class="hljs-keyword">return</span> msg.send(msg.random(response));

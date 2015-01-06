@@ -8,7 +8,7 @@ define(['underscorish'], function (_) {
     robot.help(robot.name + " hr program", "show next courses as published on hackreactor.com/program ");
     robot.help(robot.name + " hr students (name | twitter | github | linkedin | site)", "take and list relative students data from hackreactor.com/students ");
 
-    var apikey = '',
+    var apikey = 'YOUR_KIMONOLABS_APIKEY',
     replies = {
         program: ["Next HR cohorts starts on $... onward!", "Upcoming HR programs will start on $", "Next HR classes begins on $"],
         students: ["Ready to read all %? Here we go: $", "$ ....and with the latest one should be %"]

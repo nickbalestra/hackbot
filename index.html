@@ -2,131 +2,130 @@
 
 <html>
 <head>
-    <title>hackbot.js</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-    <link rel="stylesheet" media="all" href="docco.css" />
+  <title>hackbot.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
 </head>
 <body>
-    <div id="container">
-        <div id="background"></div>
-
-        <ul class="sections">
-
-            <li id="title">
-                <div class="annotation">
-                    <h1>hackbot.js</h1>
-                </div>
-            </li>
-
-
-
-            <li id="section-1">
-                <div class="annotation">
-
-                    <div class="pilwrap ">
-                        <a class="pilcrow" href="#section-1">&#182;</a>
-                    </div>
-                    <p>Getting Started With Hackbot</p>
-
-                </div>
-
-                <div class="content"><div class='highlight'><pre>requirejs.config({
-                    baseUrl: <span class="hljs-string">'lib'</span>,
-                    paths: {
-                        hackbot: <span class="hljs-string">'../hackbot'</span>,
-                        underscorish: <span class="hljs-string">'underscorish'</span>,
-                        chatbuilder: <span class="hljs-string">'CHATBUILDER_LIB_HERE'</span>
-                    }
-                });</pre></div></div>
-
-            </li>
-
-
-            <li id="section-2">
-                <div class="annotation">
-
-                    <div class="pilwrap ">
-                        <a class="pilcrow" href="#section-2">&#182;</a>
-                    </div>
-                    <p>Define dependencies</p>
-
-                </div>
-
-                <div class="content"><div class='highlight'><pre>requirejs([<span class="hljs-string">'hackbot/robot'</span>, <span class="hljs-string">'chatbuilder'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
-
-                </li>
-
-
-                <li id="section-3">
-                    <div class="annotation">
-
-                        <div class="pilwrap ">
-                            <a class="pilcrow" href="#section-3">&#182;</a>
-                        </div>
-                        <p><strong>Launch your Hackbot:</strong> <br>
-                            Create a Robot instance and give it a name;
-                            load scripts defined in script.js
-                            and start the robot adapter, thats it.</p>
-
-                        </div>
-
-                        <div class="content"><div class='highlight'><pre>    robot = <span class="hljs-keyword">new</span> Robot(Chat.username != <span class="hljs-string">'anonymous'</span> ? Chat.username : <span class="hljs-literal">null</span>);
-                            robot.load();
-                            robot.run();
-                        });</pre></div></div>
-
-                    </li>
-
-
-                    <li id="section-4">
-                        <div class="annotation">
-
-                            <div class="pilwrap ">
-                                <a class="pilcrow" href="#section-4">&#182;</a>
-                            </div>
-                            <h2 id="documentation-index-">Documentation Index:</h2>
-                            <h3 id="hackbot-core">Hackbot Core</h3>
-                            <ul>
-                                <li><a href="robot.html">robot.js</a></li>
-                                <li><a href="brain.html">brain.js</a></li>
-                                <li><a href="listener.html">listener.js</a></li>
-                                <li><a href="message.html">message.js</a></li>
-                                <li><a href="response.html">response.js</a></li>
-                                <li><a href="user.html">user.js</a></li>
-                            </ul>
-                            <h3 id="hackbot-adapter">Hackbot Adapter</h3>
-                            <ul>
-                                <li><a href="adapter.html">adapter.js</a></li>
-                            </ul>
-                            <h3 id="libraries">Libraries</h3>
-                            <ul>
-                                <li><a href="underscorish.html">underscorish.js</a></li>
-                            </ul>
-                            <h3 id="scripts">Scripts</h3>
-                            <ul>
-                                <li><a href="scripts.html">scripts.js</a><ul>
-                                    <li><a href="hackbot-help.html">hackbot-help.js</a></li>
-                                    <li><a href="hackbot-about.html">hackbot-about.js</a></li>
-                                    <li><a href="hackbot-ping.html">hackbot-ping.js</a></li>
-                                    <li><a href="hackbot-hello.html">hackbot-hello.js</a></li>
-                                    <li><a href="hackbot-thankyou.html">hackbot-thankyou.js</a></li>
-                                    <li><a href="hackbot-log.html">hackbot-log.js</a></li>
-                                    <li><a href="hackbot-users.html">hackbot-users.js</a></li>
-                                    <li><a href="hackbot-ambush.html">hackbot-ambush.js</a></li>
-                                    <li><a href="hackbot-hackreactor.html">hackbot-hackreactor.js</a></li>
-                                    <li><a href="hackbot-hackreactorrocks.html">hackbot-hackreactorrocks.js</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <p><em>Hackbot is heavily inspired by Hubot and its architecture is “almost” identical. For other scripts to be ported to hackbot you can then check the <a href="http://hubot-script-catalog.herokuapp.com/">hubot scripts cataloge</a></em></p>
-
-                    </div>
-
-                </li>
-
-            </ul>
-        </div>
-    </body>
-    </html>
+  <div id="container">
+    <div id="background"></div>
     
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hackbot.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Getting Started With Hackbot</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>requirejs.config({
+    baseUrl: <span class="hljs-string">'lib'</span>,
+    paths: {
+        hackbot: <span class="hljs-string">'../hackbot'</span>,
+        underscorish: <span class="hljs-string">'underscorish'</span>,
+        chatbuilder: <span class="hljs-string">'http://chatbuilder.hackreactor.com/ChatBuilder'</span>
+    }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Define dependencies</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>requirejs([<span class="hljs-string">'hackbot/robot'</span>, <span class="hljs-string">'chatbuilder'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>Launch your Hackbot:</strong> <br>
+Create a Robot instance and give it a name;
+load scripts defined in script.js
+and start the robot adapter, thats it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    robot = <span class="hljs-keyword">new</span> Robot(Chat.username != <span class="hljs-string">'anonymous'</span> ? Chat.username : <span class="hljs-literal">null</span>);
+    robot.load();
+    robot.run();
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="documentation-index-">Documentation Index:</h2>
+<h3 id="hackbot-core">Hackbot Core</h3>
+<ul>
+<li><a href="robot.html">robot.js</a></li>
+<li><a href="brain.html">brain.js</a></li>
+<li><a href="listener.html">listener.js</a></li>
+<li><a href="message.html">message.js</a></li>
+<li><a href="response.html">response.js</a></li>
+<li><a href="user.html">user.js</a></li>
+</ul>
+<h3 id="hackbot-adapter">Hackbot Adapter</h3>
+<ul>
+<li><a href="adapter.html">adapter.js</a></li>
+</ul>
+<h3 id="libraries">Libraries</h3>
+<ul>
+<li><a href="underscorish.html">underscorish.js</a></li>
+</ul>
+<h3 id="scripts">Scripts</h3>
+<ul>
+<li><a href="scripts.html">scripts.js</a><ul>
+<li><a href="hackbot-help.html">hackbot-help.js</a></li>
+<li><a href="hackbot-about.html">hackbot-about.js</a></li>
+<li><a href="hackbot-ping.html">hackbot-ping.js</a></li>
+<li><a href="hackbot-hello.html">hackbot-hello.js</a></li>
+<li><a href="hackbot-thankyou.html">hackbot-thankyou.js</a></li>
+<li><a href="hackbot-log.html">hackbot-log.js</a></li>
+<li><a href="hackbot-users.html">hackbot-users.js</a></li>
+<li><a href="hackbot-ambush.html">hackbot-ambush.js</a></li>
+<li><a href="hackbot-hackreactor.html">hackbot-hackreactor.js</a></li>
+<li><a href="hackbot-hackreactorrocks.html">hackbot-hackreactorrocks.js</a></li>
+</ul>
+</li>
+</ul>
+<p>Hackbot is heavily inspired by <a href="https://hubot.github.com/">Hubot</a> and its architecture is “almost” identical. For other scripts to be ported to hackbot you can then check the <a href="http://hubot-script-catalog.herokuapp.com">hubot scripts cataloge</a></p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

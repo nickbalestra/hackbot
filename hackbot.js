@@ -4,7 +4,7 @@ requirejs.config({
     paths: {
         hackbot: '../hackbot',
         underscorish: 'underscorish',
-        chatbuilder: 'http://chatbuilder.hackreactor.com/ChatBuilder'
+        chatbuilder: 'CHATBUILDER_LIB_HERE'
     }
 });
 

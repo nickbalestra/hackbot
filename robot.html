@@ -2,341 +2,343 @@
 
 <html>
 <head>
-  <title>robot.js</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="docco.css" />
+    <title>robot.js</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <link rel="stylesheet" media="all" href="docco.css" />
 </head>
 <body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>robot.js</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <p>Defining robots and their dependencies</p>
+    <div id="container">
+        <div id="background"></div>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require)</span> </span>{
+        <ul class="sections">
 
-    <span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'underscorish'</span>),
-        Response = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./response'</span>),
-        Listener = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./listener'</span>),
-        Adapter = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./adapter'</span>),
-        Brain = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./brain'</span>),
-        Message = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./message'</span>);
+            <li id="title">
+                <div class="annotation">
+                    <h1>robot.js</h1>
+                </div>
+            </li>
 
-    Robot = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <h2 id="robots">Robots</h2>
-<p><code>new Robot(name)</code></p>
-<p><em>Robots receive messages from a chat source, and
-dispatch them to matching listeners.</em></p>
-<p><strong>name</strong> - A String of the robot name, defaults to Hackbot.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Robot</span><span class="hljs-params">(name)</span> </span>{
-            <span class="hljs-keyword">if</span> (name == <span class="hljs-literal">null</span>) {
-                name = <span class="hljs-string">'Hackbot'</span>;
-            }
-            <span class="hljs-keyword">this</span>.name = name;
-            <span class="hljs-keyword">this</span>.listeners = [];
-            <span class="hljs-keyword">this</span>.commands = [];
-            <span class="hljs-keyword">this</span>.Response = Response;
-            <span class="hljs-keyword">this</span>.adapter = <span class="hljs-keyword">new</span> Adapter(<span class="hljs-keyword">this</span>);
-            <span class="hljs-keyword">this</span>.brain = <span class="hljs-keyword">new</span> Brain(<span class="hljs-keyword">this</span>);
-        }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h3 id="hear">hear</h3>
-<p><code>robot.hear(regex, callback)</code></p>
-<p><strong>Public:</strong> <em>Adds a Listener that attempts to match incoming messages based on
-a Regex.</em></p>
-<p><strong>regex</strong>    - A Regex that determines if the callback should be triggered.</p>
-<p><strong>callback</strong> - A Function that is called with a Response object.</p>
-<p>Returns nothing.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.hear = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(regex, callback)</span></span>{
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.listeners.push(<span class="hljs-keyword">new</span> Listener(<span class="hljs-keyword">this</span>, regex, callback));
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <h3 id="respond">respond</h3>
-<p><code>robot.respond(regex, callback)</code></p>
-<p><strong>Public:</strong> <em>Adds a Listener that attempts to match incoming messages directed
-at the robot based on a Regex. All regexes treat patterns like they begin
-with a ‘^’</em></p>
-<p><strong>regex</strong>    - A Regex that determines if the callback should be called.</p>
-<p><strong>callback</strong> - A Function that is called with a Response object.</p>
-<p>Returns nothing.</p>
+            <li id="section-1">
+                <div class="annotation">
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.respond = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(regex, callback)</span> </span>{
-            <span class="hljs-keyword">var</span> modifiers, name, newRegex, pattern, re;
-            re = regex.toString().split(<span class="hljs-string">'/'</span>);
-            re.shift();
-            modifiers = re.pop();
+                    <div class="pilwrap ">
+                        <a class="pilcrow" href="#section-1">&#182;</a>
+                    </div>
+                    <p>Defining robots and their dependencies</p>
 
-            <span class="hljs-keyword">if</span> (re[<span class="hljs-number">0</span>] &amp;&amp; re[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] === <span class="hljs-string">'^'</span>) {
-              <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Anchors don't work well with respond, perhaps you want to use 'hear'"</span>);
-              <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"The regex in question was "</span> + (regex.toString()));
-            }
+                </div>
 
-            pattern = re.join(<span class="hljs-string">'/'</span>);
-            name = <span class="hljs-keyword">this</span>.name.replace(<span class="hljs-regexp">/[-[\]{}()*+?.,\\^$|#\s]/g</span>, <span class="hljs-string">'\\$&amp;'</span>);
-            newRegex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^\\s*[@]?"</span> + name + <span class="hljs-string">"[:,]?\\s*(?:"</span> + pattern + <span class="hljs-string">")"</span>, modifiers);
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.listeners.push(<span class="hljs-keyword">new</span> Listener(<span class="hljs-keyword">this</span>, newRegex, callback));
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <h3 id="receive">receive</h3>
-<p><code>robot.receive(message)</code></p>
-<p><strong>Public:</strong> <em>Passes the given message to any interested Listeners.</em></p>
-<p><strong>message</strong> - A Message instance. Listeners can flag this message as ‘done’ to
-          prevent further execution.</p>
-<p>Returns nothing.</p>
+                <div class="content"><div class='highlight'><pre>
+                    define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require)</span> </span>{
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.receive = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
-            <span class="hljs-keyword">var</span> error, listener, results, _i, _len, _ref;
-            results = [];
-            _ref = <span class="hljs-keyword">this</span>.listeners;
-            <span class="hljs-keyword">for</span> (_i = <span class="hljs-number">0</span>, _len = _ref.length; _i &lt; _len; _i++) {
-                listener = _ref[_i];
-                results.push(listener.call(message));
-                <span class="hljs-keyword">if</span> (message.done) {
-                    <span class="hljs-keyword">break</span>;
-                }
-            }
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <h3 id="load">load</h3>
-<p><code>robot.load(path)</code></p>
-<p><strong>Public:</strong> <em>Loads every script defined in <code>script.js</code>.
-(<code>script.js</code> need to be placed inside the given path directory)</em></p>
-<p><strong>path</strong> - A String of path where the scripts and <code>scripts.js</code> are located.
-Defaul to hackbot/scripts.</p>
-<p>Returns nothing.</p>
+                        <span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'underscorish'</span>),
+                        Response = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./response'</span>),
+                        Listener = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./listener'</span>),
+                        Adapter = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./adapter'</span>),
+                        Brain = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./brain'</span>),
+                        Message = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./message'</span>);
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.load = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path)</span> </span>{
-            <span class="hljs-keyword">var</span> scriptsPath = path ? path + <span class="hljs-string">'/'</span> : <span class="hljs-string">'../hackbot/scripts/'</span>;
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Loading scripts at "</span> + scriptsPath);
-            <span class="hljs-built_in">require</span>([scriptsPath + <span class="hljs-string">'scripts'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(toLoad)</span></span>{
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> script <span class="hljs-keyword">in</span> toLoad) {
-                    <span class="hljs-built_in">require</span>([scriptsPath + toLoad[script]]);
-                }
-            });
+                        Robot = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> </span>{</pre></div></div>
 
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <h3 id="help">help</h3>
-<p><code>robot.help(command, description)</code></p>
-<p><strong>Public:</strong> <em>Adds commands for help reference.</em></p>
-<p><strong>command</strong>    - A string containing the command to be run.</p>
-<p><strong>description</strong> - A string explaining the command.</p>
-<p>Returns nothing.</p>
+                        </li>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.help = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command, description)</span></span>{
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commands.push({command: command, description: description});
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h3 id="send">send</h3>
-<p><code>robot.send(strings...)</code></p>
-<p><strong>Public:</strong> <em>An helper send function which delegates to the adapter’s send
-function.</em></p>
-<p><strong>strings</strong> - One or more Strings for each message to send.</p>
-<p>Returns nothing.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-            <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>); <span class="hljs-comment">// http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments</span>
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.send(args.join(<span class="hljs-string">' '</span>));
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <h3 id="print">print</h3>
-<p><code>robot.print(strings...)</code></p>
-<p><strong>Public:</strong> <em>An helper print function which delegates to the adapter’s print
-function.</em></p>
-<p><strong>strings</strong> - One or more Strings to be printed.</p>
-<p>Returns nothing.</p>
+                        <li id="section-2">
+                            <div class="annotation">
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.print = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-            <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>); <span class="hljs-comment">// http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments</span>
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.print(args.join(<span class="hljs-string">' '</span>));
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <h3 id="reply">reply</h3>
-<p><code>robot.reply(user, strings...)</code></p>
-<p><strong>Public:</strong> <em>An helper reply function which delegates to the adapter’s reply
-function.</em></p>
-<p><strong>user</strong>    - A User Name.</p>
-<p><strong>strings</strong> - One or more Strings for each message to send.</p>
-<p>Returns nothing.</p>
+                                <div class="pilwrap ">
+                                    <a class="pilcrow" href="#section-2">&#182;</a>
+                                </div>
+                                <h2 id="robots">Robots</h2>
+                                <p><code>new Robot(name)</code></p>
+                                <p><em>Robots receive messages from a chat source, and
+                                    dispatch them to matching listeners.</em></p>
+                                    <p><strong>name</strong> - A String of the robot name, defaults to Hackbot.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.reply = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, strings)</span> </span>{
-            <span class="hljs-keyword">var</span> envelope = {<span class="hljs-string">'user'</span>: user};
-            <span class="hljs-keyword">var</span> strings = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.reply(envelope, strings.join(<span class="hljs-string">' '</span>));
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <h3 id="run">run</h3>
-<p><code>robot.run()</code></p>
-<p><strong>Public:</strong> <em>Kick off the event loop for the adapter</em></p>
-<p>Returns nothing.</p>
+                                </div>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.run = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Starting adpter"</span>)
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.run();
-        };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <h3 id="shutdown">shutdown</h3>
-<p><code>robot.shutdown()</code></p>
-<p><strong>Public:</strong> <em>Gracefully shutdown the robot process</em></p>
-<p>Returns nothing.</p>
+                                <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Robot</span><span class="hljs-params">(name)</span> </span>{
+                                    <span class="hljs-keyword">if</span> (name == <span class="hljs-literal">null</span>) {
+                                        name = <span class="hljs-string">'Hackbot'</span>;
+                                    }
+                                    <span class="hljs-keyword">this</span>.name = name;
+                                    <span class="hljs-keyword">this</span>.listeners = [];
+                                    <span class="hljs-keyword">this</span>.commands = [];
+                                    <span class="hljs-keyword">this</span>.Response = Response;
+                                    <span class="hljs-keyword">this</span>.adapter = <span class="hljs-keyword">new</span> Adapter(<span class="hljs-keyword">this</span>);
+                                    <span class="hljs-keyword">this</span>.brain = <span class="hljs-keyword">new</span> Brain(<span class="hljs-keyword">this</span>);
+                                    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.name + <span class="hljs-string">" says: Bite my shiny metal ass!"</span>);
+                                }</pre></div></div>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        Robot.prototype.shutdown = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-            <span class="hljs-keyword">this</span>.adapter.close();
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.brain.close();
-        };
+                            </li>
 
-        <span class="hljs-keyword">return</span> Robot;
 
-    })();
+                            <li id="section-3">
+                                <div class="annotation">
 
-});</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
+                                    <div class="pilwrap ">
+                                        <a class="pilcrow" href="#section-3">&#182;</a>
+                                    </div>
+                                    <h3 id="hear">hear</h3>
+                                    <p><code>robot.hear(regex, callback)</code></p>
+                                    <p><strong>Public:</strong> <em>Adds a Listener that attempts to match incoming messages based on
+                                        a Regex.</em></p>
+                                        <p><strong>regex</strong>    - A Regex that determines if the callback should be triggered.</p>
+                                        <p><strong>callback</strong> - A Function that is called with a Response object.</p>
+                                        <p>Returns nothing.</p>
+
+                                    </div>
+
+                                    <div class="content"><div class='highlight'><pre>        Robot.prototype.hear = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(regex, callback)</span></span>{
+                                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.listeners.push(<span class="hljs-keyword">new</span> Listener(<span class="hljs-keyword">this</span>, regex, callback));
+                                    };</pre></div></div>
+
+                                </li>
+
+
+                                <li id="section-4">
+                                    <div class="annotation">
+
+                                        <div class="pilwrap ">
+                                            <a class="pilcrow" href="#section-4">&#182;</a>
+                                        </div>
+                                        <h3 id="respond">respond</h3>
+                                        <p><code>robot.respond(regex, callback)</code></p>
+                                        <p><strong>Public:</strong> <em>Adds a Listener that attempts to match incoming messages directed
+                                            at the robot based on a Regex. All regexes treat patterns like they begin
+                                            with a ‘^’</em></p>
+                                            <p><strong>regex</strong>    - A Regex that determines if the callback should be called.</p>
+                                            <p><strong>callback</strong> - A Function that is called with a Response object.</p>
+                                            <p>Returns nothing.</p>
+
+                                        </div>
+
+                                        <div class="content"><div class='highlight'><pre>        Robot.prototype.respond = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(regex, callback)</span> </span>{
+                                            <span class="hljs-keyword">var</span> modifiers, name, newRegex, pattern, re;
+                                            re = regex.toString().split(<span class="hljs-string">'/'</span>);
+                                            re.shift();
+                                            modifiers = re.pop();
+
+                                            <span class="hljs-keyword">if</span> (re[<span class="hljs-number">0</span>] &amp;&amp; re[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] === <span class="hljs-string">'^'</span>) {
+                                                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Anchors don't work well with respond, perhaps you want to use 'hear'"</span>);
+                                                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"The regex in question was "</span> + (regex.toString()));
+                                            }
+
+                                            pattern = re.join(<span class="hljs-string">'/'</span>);
+                                            name = <span class="hljs-keyword">this</span>.name.replace(<span class="hljs-regexp">/[-[\]{}()*+?.,\\^$|#\s]/g</span>, <span class="hljs-string">'\\$&amp;'</span>);
+                                            newRegex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^\\s*[@]?"</span> + name + <span class="hljs-string">"[:,]?\\s*(?:"</span> + pattern + <span class="hljs-string">")"</span>, modifiers);
+                                            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.listeners.push(<span class="hljs-keyword">new</span> Listener(<span class="hljs-keyword">this</span>, newRegex, callback));
+                                        };</pre></div></div>
+
+                                    </li>
+
+
+                                    <li id="section-5">
+                                        <div class="annotation">
+
+                                            <div class="pilwrap ">
+                                                <a class="pilcrow" href="#section-5">&#182;</a>
+                                            </div>
+                                            <h3 id="receive">receive</h3>
+                                            <p><code>robot.receive(message)</code></p>
+                                            <p><strong>Public:</strong> <em>Passes the given message to any interested Listeners.</em></p>
+                                            <p><strong>message</strong> - A Message instance. Listeners can flag this message as ‘done’ to
+                                                prevent further execution.</p>
+                                                <p>Returns nothing.</p>
+
+                                            </div>
+
+                                            <div class="content"><div class='highlight'><pre>        Robot.prototype.receive = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
+                                                <span class="hljs-keyword">var</span> error, listener, results, _i, _len, _ref;
+                                                results = [];
+                                                _ref = <span class="hljs-keyword">this</span>.listeners;
+                                                <span class="hljs-keyword">for</span> (_i = <span class="hljs-number">0</span>, _len = _ref.length; _i &lt; _len; _i++) {
+                                                    listener = _ref[_i];
+                                                    results.push(listener.call(message));
+                                                    <span class="hljs-keyword">if</span> (message.done) {
+                                                        <span class="hljs-keyword">break</span>;
+                                                    }
+                                                }
+                                            };</pre></div></div>
+
+                                        </li>
+
+
+                                        <li id="section-6">
+                                            <div class="annotation">
+
+                                                <div class="pilwrap ">
+                                                    <a class="pilcrow" href="#section-6">&#182;</a>
+                                                </div>
+                                                <h3 id="load">load</h3>
+                                                <p><code>robot.load(path)</code></p>
+                                                <p><strong>Public:</strong> <em>Loads every script defined in <code>script.js</code>.
+                                                    (<code>script.js</code> need to be placed inside the given path directory)</em></p>
+                                                    <p><strong>path</strong> - A String of path where the scripts and <code>scripts.js</code> are located.
+                                                        Defaul to hackbot/scripts.</p>
+                                                        <p>Returns nothing.</p>
+
+                                                    </div>
+
+                                                    <div class="content"><div class='highlight'><pre>        Robot.prototype.load = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path)</span> </span>{
+                                                        <span class="hljs-keyword">var</span> scriptsPath = path ? path + <span class="hljs-string">'/'</span> : <span class="hljs-string">'../hackbot/scripts/'</span>;
+                                                        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Loading scripts at "</span> + scriptsPath);
+                                                        <span class="hljs-built_in">require</span>([scriptsPath + <span class="hljs-string">'scripts'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(toLoad)</span></span>{
+                                                            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> script <span class="hljs-keyword">in</span> toLoad) {
+                                                                <span class="hljs-built_in">require</span>([scriptsPath + toLoad[script]]);
+                                                            }
+                                                        });
+
+                                                    };</pre></div></div>
+
+                                                </li>
+
+
+                                                <li id="section-7">
+                                                    <div class="annotation">
+
+                                                        <div class="pilwrap ">
+                                                            <a class="pilcrow" href="#section-7">&#182;</a>
+                                                        </div>
+                                                        <h3 id="help">help</h3>
+                                                        <p><code>robot.help(command, description)</code></p>
+                                                        <p><strong>Public:</strong> <em>Adds commands for help reference.</em></p>
+                                                        <p><strong>command</strong>    - A string containing the command to be run.</p>
+                                                        <p><strong>description</strong> - A string explaining the command.</p>
+                                                        <p>Returns nothing.</p>
+
+                                                    </div>
+
+                                                    <div class="content"><div class='highlight'><pre>        Robot.prototype.help = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(command, description)</span></span>{
+                                                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commands.push({command: command, description: description});
+                                                    };</pre></div></div>
+
+                                                </li>
+
+
+                                                <li id="section-8">
+                                                    <div class="annotation">
+
+                                                        <div class="pilwrap ">
+                                                            <a class="pilcrow" href="#section-8">&#182;</a>
+                                                        </div>
+                                                        <h3 id="send">send</h3>
+                                                        <p><code>robot.send(strings...)</code></p>
+                                                        <p><strong>Public:</strong> <em>An helper send function which delegates to the adapter’s send
+                                                            function.</em></p>
+                                                            <p><strong>strings</strong> - One or more Strings for each message to send.</p>
+                                                            <p>Returns nothing.</p>
+
+                                                        </div>
+
+                                                        <div class="content"><div class='highlight'><pre>        Robot.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                                                            <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>); <span class="hljs-comment">// http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments</span>
+                                                            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.send(args.join(<span class="hljs-string">' '</span>));
+                                                        };</pre></div></div>
+
+                                                    </li>
+
+
+                                                    <li id="section-9">
+                                                        <div class="annotation">
+
+                                                            <div class="pilwrap ">
+                                                                <a class="pilcrow" href="#section-9">&#182;</a>
+                                                            </div>
+                                                            <h3 id="print">print</h3>
+                                                            <p><code>robot.print(strings...)</code></p>
+                                                            <p><strong>Public:</strong> <em>An helper print function which delegates to the adapter’s print
+                                                                function.</em></p>
+                                                                <p><strong>strings</strong> - One or more Strings to be printed.</p>
+                                                                <p>Returns nothing.</p>
+
+                                                            </div>
+
+                                                            <div class="content"><div class='highlight'><pre>        Robot.prototype.print = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                                                                <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>); <span class="hljs-comment">// http://stackoverflow.com/questions/2091138/why-doesnt-join-work-with-function-arguments</span>
+                                                                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.print(args.join(<span class="hljs-string">' '</span>));
+                                                            };</pre></div></div>
+
+                                                        </li>
+
+
+                                                        <li id="section-10">
+                                                            <div class="annotation">
+
+                                                                <div class="pilwrap ">
+                                                                    <a class="pilcrow" href="#section-10">&#182;</a>
+                                                                </div>
+                                                                <h3 id="reply">reply</h3>
+                                                                <p><code>robot.reply(user, strings...)</code></p>
+                                                                <p><strong>Public:</strong> <em>An helper reply function which delegates to the adapter’s reply
+                                                                    function.</em></p>
+                                                                    <p><strong>user</strong>    - A User Name.</p>
+                                                                    <p><strong>strings</strong> - One or more Strings for each message to send.</p>
+                                                                    <p>Returns nothing.</p>
+
+                                                                </div>
+
+                                                                <div class="content"><div class='highlight'><pre>        Robot.prototype.reply = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, strings)</span> </span>{
+                                                                    <span class="hljs-keyword">var</span> envelope = {<span class="hljs-string">'user'</span>: user};
+                                                                    <span class="hljs-keyword">var</span> strings = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
+                                                                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.reply(envelope, strings.join(<span class="hljs-string">' '</span>));
+                                                                };</pre></div></div>
+
+                                                            </li>
+
+
+                                                            <li id="section-11">
+                                                                <div class="annotation">
+
+                                                                    <div class="pilwrap ">
+                                                                        <a class="pilcrow" href="#section-11">&#182;</a>
+                                                                    </div>
+                                                                    <h3 id="run">run</h3>
+                                                                    <p><code>robot.run()</code></p>
+                                                                    <p><strong>Public:</strong> <em>Kick off the event loop for the adapter</em></p>
+                                                                    <p>Returns nothing.</p>
+
+                                                                </div>
+
+                                                                <div class="content"><div class='highlight'><pre>        Robot.prototype.run = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                                                                    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Starting adpter"</span>)
+                                                                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.adapter.run();
+                                                                };</pre></div></div>
+
+                                                            </li>
+
+
+                                                            <li id="section-12">
+                                                                <div class="annotation">
+
+                                                                    <div class="pilwrap ">
+                                                                        <a class="pilcrow" href="#section-12">&#182;</a>
+                                                                    </div>
+                                                                    <h3 id="shutdown">shutdown</h3>
+                                                                    <p><code>robot.shutdown()</code></p>
+                                                                    <p><strong>Public:</strong> <em>Gracefully shutdown the robot process</em></p>
+                                                                    <p>Returns nothing.</p>
+
+                                                                </div>
+
+                                                                <div class="content"><div class='highlight'><pre>        Robot.prototype.shutdown = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                                                                    <span class="hljs-keyword">this</span>.adapter.close();
+                                                                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.brain.close();
+                                                                };
+
+                                                                <span class="hljs-keyword">return</span> Robot;
+
+                                                            })();
+
+                                                        });</pre></div></div>
+
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </body>
+                                        </html>
+                                        
